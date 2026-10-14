@@ -1,0 +1,19 @@
+Kiln licensing map. Each file's own header (SPDX line) wins; this is the rule for files without one.
+
+Open source, required by the licence of the code they are built into or on (the source is offered to everyone who
+receives a binary; see scripts/export-open-source.sh):
+  qemu/            GPL-2.0-or-later   devices compiled into QEMU
+  kernel/vaddress/ GPL-2.0            Linux kernel module (vaddress_uapi.h: GPL-2.0 WITH Linux-syscall-note)
+  gfx/             GPL-2.0-or-later   renderer bridge that QEMU loads with dlopen (until it runs in its own process,
+                                      see docs/LICENSING.md)
+  scripts/apply-qemu.sh               hooks the files above into a QEMU tree
+
+Permissive, shipped as binaries with their notices (docs/THIRD-PARTY-NOTICES.txt):
+  guest/gles/      MIT / Apache-2.0   gfxstream guest and goldfish gralloc/HWC derived code
+  guest/input/     Apache-2.0         own code, may be relicensed for future releases by its author
+
+Proprietary, all rights reserved (no licence is granted, no source is offered):
+  launcher/        KilnCore, Kiln (launcher), Kiln Player, kilnctl
+  scripts/         everything except apply-qemu.sh
+  docs/            specifications and notes
+  guest/vendor-overlay/, guest/vendor/   rc files and the guest agent
