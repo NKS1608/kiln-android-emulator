@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.2-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.3-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.2-alpha"><b>⬇ Download Kiln 0.0.2-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.3-alpha"><b>⬇ Download Kiln 0.0.3-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -38,12 +38,12 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
   - **Game controllers.** A controller connected to your Mac shows up in Android as a standard gamepad.
   - **Mouse look** for shooters (in the default mapping), rotation that follows the game, and refresh rates up to 144 Hz.
 - **Every instance is its own phone.** Pick from 16 device profiles (Samsung Galaxy S24 Ultra, Pixel 9 Pro, OnePlus 12,
-  ROG Phone 8 and more): Android reports that phone's model, build fingerprint and baseband. Each instance has its own
+  ROG Phone 8 and more): Android reports that phone's model, build fingerprint, baseband, board, system-on-chip and SKU. Each instance has its own
   SIM card (39 operators in 15 countries, or none) with a phone number of its country, IMEI, serial number and home
   Wi-Fi network. The battery drains and
   charges like a real one, and the mobile signal comes and goes.
 - **Many instances.** Run several side by side, each in its own window and with its own Dock icon color. Choose the GPU a
-  game should see (Adreno 740 or 650, Mali-G68) and size CPU and memory with Low, Medium or High presets.
+  game should see (Adreno 740 or 650, Mali-G68) and size CPU and memory with Low, Medium or High presets, which scale with your Mac's performance cores and memory.
 - **Install anything.** Install `.apk`, `.xapk`, `.apkm` and `.apks` bundles from the toolbar: split APKs are put
   together for you.
 - **A developer's emulator too.** Open a shell inside Android with one click, with a real terminal (job control, `top`,
@@ -52,7 +52,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.2-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.2-alpha) and open it.
+1. Download **`Kiln-0.0.3-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.3-alpha) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this alpha is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -62,8 +62,9 @@ Each instance gets its own disks, about 3 GB on your Mac to start, growing as yo
 choose is what Android shows; your Mac only stores what is written). Plan on 4 GB of RAM per running
 instance with the Low preset.
 
-**Coming from 0.0.1-alpha?** Your instances keep working with the image they were created with. The new Android image
+**Coming from an earlier alpha?** Your instances keep working with the image they were created with. The new Android image
 is used by instances you create after updating: create a new one to get it (apps and data do not move between images).
+The new phone details (system-on-chip, board, SKU) and the faster start appear only on instances made from the new image.
 
 ## About the Android image
 
@@ -98,30 +99,29 @@ is used by instances you create after updating: create a new one to get it (apps
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.2-alpha
+## What's new in 0.0.3-alpha
 
-- **A new Android image, built by Kiln:** LineageOS 23.2 from source, signed with Kiln's own keys, SELinux enforcing, and
-  a leaner set of apps (see [About the Android image](#about-the-android-image)).
-- **Every instance is its own phone:** the chosen phone's model, build fingerprint and baseband version; a SIM card from
-  one of 39 operators in 15 countries (choose the country in the settings), with a phone number of that country and its
-  IMEI shown in *About phone*; a home
-  Wi-Fi network with a realistic name, access point and address; a battery that drains and charges, and a mobile signal
-  that changes.
-- **The app speaks Portuguese:** the launcher and the window follow your Mac's language (English or Português do Brasil).
-- **Better rotation:** Rotate switches between portrait and landscape only (never upside down), its icon shows the current
-  orientation, and the window turns in one smooth step.
-- **Volume − and + buttons** that work like a phone's keys, and a tidier toolbar.
-- **The screen never sleeps** by itself, and Android no longer runs as a debuggable device unless adb is turned on.
-- **No more "Bluetooth keeps stopping"** on the first start of a new instance.
-- **The joystick moves like a thumb:** the finger lands on the stick, slides out and holds, and slides to the new direction
-  when you change keys. Games with a floating stick now follow it.
-- **Choose the internal storage** of a new instance (32, 64, 128 or 256 GB; 64 GB by default). Android shows the right
-  size and the right amount used.
-- The built-in shell can reach the network by name (`ping google.com`, `curl`).
+- **Starts on macOS 14 and later.** The 0.0.2-alpha download was built for the newest macOS only and did not start on older
+  ones. The runtime is now built for macOS 14 (and is about 90 MB smaller).
+- **A faster start.** The new Android image no longer goes through a UEFI firmware step: Kiln hands it the kernel and the
+  phone's identity directly, which saves about 0.6 seconds on every boot.
+- **A more convincing phone.** Device information apps now show the phone's chip and board (for example a Snapdragon 8 Gen 2
+  for a Galaxy S23 Ultra, a Tensor G3 for a Pixel 8) and an SKU in the maker's usual shape, instead of "VirtIO
+  virtio_arm64only". The hardware name still reads `virtio`, because Android finds its drivers by that name.
+- **Presets that fit your Mac.** Low, Medium and High now follow your Mac's performance cores and memory: on a Mac with
+  four performance cores and 16 GB, High is 4 CPUs and 6 GiB instead of 6 CPUs and 8 GiB, which crowded the efficiency
+  cores.
+- **Less work for a hidden game.** While an instance's window is minimized or covered, it renders at 10 frames per second
+  and returns to full speed when you look at it again.
+- **Steadier.** A malformed command from Android no longer crashes the player, Stop no longer cuts off Android while it is
+  still saving, and several memory-safety problems in the graphics path are fixed (memory the renderer freed could still be
+  reached from inside Android, and two race conditions between Android and the renderer).
 
 ## Known limitations
 
 - **Alpha quality.** Some things will break. Back up anything you care about inside an instance.
+- **macOS 14 to 26 are untested for full sessions.** The app and its runtime start on macOS 14; a complete Android session
+  has been run on macOS 27 only. Reports from older systems are very welcome.
 - **Not notarized.** macOS asks for confirmation the first time (see [Install](#install)).
 - **Google certification.** This is an emulator, so apps that require Play Integrity / device certification refuse to
   run, and games or apps that look for emulators can still tell. Signing in to a Google account has not been fully
@@ -174,6 +174,6 @@ android-lineage-qemu project, MindTheGapps, any mobile operator or any device ma
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.2-alpha.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.3-alpha.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
