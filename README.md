@@ -9,7 +9,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 <p align="center"><code>0.0.2-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/latest"><b>⬇ Download Kiln 0.0.2-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.2-alpha"><b>⬇ Download Kiln 0.0.2-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -52,7 +52,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.2-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/latest) and open it.
+1. Download **`Kiln-0.0.2-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.2-alpha) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this alpha is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
