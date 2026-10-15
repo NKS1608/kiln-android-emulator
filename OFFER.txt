@@ -1,5 +1,6 @@
-Written offer. The Kiln application contains QEMU and other software under the GNU General Public License and the GNU Lesser
-General Public License. For three years after you received it, and for as long as we offer support for that release, you can
-ask for the complete corresponding source code of those programs, as it was built into your copy, by writing to the address
-published with the release (its README). The source is provided at no charge beyond the cost of physically performing
-the distribution; the unmodified parts are the upstream releases named in the third-party notices.
+Written offer. The Kiln application contains QEMU, the Linux kernel of its Android image (with Kiln's modules and changes to
+it) and other software under the GNU General Public License and the GNU Lesser General Public License. For three years after
+you received it, and for as long as we offer support for that release, you can ask for the complete corresponding source code
+of those programs, as it was built into your copy, by writing to the address published with the release (its README). The
+source is provided at no charge beyond the cost of physically performing the distribution; the unmodified parts are the
+upstream releases named in the third-party notices.

@@ -4,6 +4,7 @@ Open source, required by the licence of the code they are built into or on (the 
 receives a binary; see scripts/export-open-source.sh):
   qemu/            GPL-2.0-or-later   devices compiled into QEMU
   kernel/vaddress/ GPL-2.0            Linux kernel module (vaddress_uapi.h: GPL-2.0 WITH Linux-syscall-note)
+  kernel/virt_wifi/ GPL-2.0           patch to the Linux virt_wifi driver (built into the Android image's kernel modules)
   gfx/             GPL-2.0-or-later   renderer bridge that QEMU loads with dlopen (until it runs in its own process,
                                       see docs/LICENSING.md)
   scripts/apply-qemu.sh               hooks the files above into a QEMU tree
