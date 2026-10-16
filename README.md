@@ -111,6 +111,11 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
 - **Smoother OpenGL ES games.** Android waits for the Mac far less on every frame: occlusion checks and state queries
   take one trip instead of two or three, and Android no longer waits for the Mac's GPU to finish a frame before it starts
   preparing the next one. Vulkan-on-Metal now runs with asynchronous submits and Metal argument buffers by default.
+- **Genshin Impact no longer crashes on Vulkan.** It declares some vertex data as integers and reads it as decimals;
+  Kiln now converts it the way a phone's GPU does, where the Mac's graphics stack refused the whole shader.
+- **Fewer hitches in Vulkan games** that send work to the GPU from several threads at once.
+- **A newer graphics translator.** Kiln now builds its own ANGLE (the OpenGL ES layer) from a 2026 version instead of
+  the 2022 one it borrowed.
 - **No more black picture with the sound still playing.** A game that moved its drawing from one thread to another could
   lose its picture until you went to the home screen and back.
 - **Attempted fix for M1 and M2 Macs.** The test builds of this release did not start on Macs with an M1 or M2 chip
@@ -130,6 +135,8 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
 - **One Android version.** Android 16 only for now. More versions are planned.
 - **No microphone, camera, calls or mobile data** inside Android yet: the SIM registers on its network, and the internet
   comes from the Wi-Fi. Bluetooth is virtual and cannot pair with real devices.
+- **Some games may show rendering glitches** with the new graphics translator (seen in Genshin Impact on a Vulkan
+  profile). Please report the game and a screenshot.
 - **Some OpenGL ES effects are still wrong.** In Genshin Impact with an OpenGL ES graphics profile (such as Adreno 650),
   water renders black. Vulkan profiles (such as Adreno 740) render it correctly: use one for that game.
 - **Storage is set once.** Choose it before the instance's first start.
