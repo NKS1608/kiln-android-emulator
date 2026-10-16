@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.5-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.6-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.5-alpha"><b>⬇ Download Kiln 0.0.5-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.6-alpha"><b>⬇ Download Kiln 0.0.6-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -52,7 +52,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.5-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.5-alpha) and open it.
+1. Download **`Kiln-0.0.6-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.6-alpha) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this alpha is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -64,8 +64,8 @@ instance with the Low preset.
 
 **Coming from an earlier alpha?** Your instances keep working with the image they were created with. The new Android image
 is used by instances you create after updating: create a new one to get it (apps and data do not move between images).
-The browser fixes below live inside Android, so they appear only on instances made from the new image; the water fix,
-the WebGL crash fix, the texture fix and the memory savings work for every instance.
+The fix for games closing on their own and the smoother frame pacing live inside Android, so they appear only on
+instances made from the new image; the other improvements below work for every instance.
 
 ## About the Android image
 
@@ -100,24 +100,18 @@ the WebGL crash fix, the texture fix and the memory savings work for every insta
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.5-alpha
+## What's new in 0.0.6-alpha
 
-- **Water renders correctly in OpenGL ES games.** In Genshin Impact with an OpenGL ES graphics profile (such as Adreno
-  650), water no longer shows through rocks, grass, characters and the sky. The game asks the GPU to throw away depth
-  information it no longer needs; on the Mac that discarded depth a later pass still read. Kiln now keeps it.
-- **WebGL pages no longer bring the emulator down.** Heavy WebGL content in the browser could make the Mac's GPU time
-  out after a few seconds, and Kiln then closed. It now runs for minutes without a hitch.
-- **No more magenta bands or repeated parts in web pages.** The browser could show pieces of a page before they were
-  drawn. This was a side effect of a speed-up in 0.0.4 that gave no measurable gain, so it was removed.
-- **No more magenta textures in Vulkan games.** Compressed textures (ASTC, the format most Android games use) are now
-  read by the Mac's GPU directly instead of being converted first, which also removes the conversion errors.
-- **Android gives memory back to your Mac.** Memory Android frees is now returned to macOS while the instance runs,
-  instead of staying with Kiln until it closes.
-- **Frames shared without copies.** The OpenGL ES and Vulkan sides of the GPU now share each frame in place instead of
-  copying it, which takes work off the CPU on every frame.
-- **More accurate OpenGL ES occlusion checks.** Games that ask whether an object is visible no longer get a made-up
-  answer for checks they never started.
-- **Key mapping editor:** deleting a selected control no longer closes the player.
+- **OpenGL ES games close far less often.** Genshin Impact with an OpenGL ES graphics profile (such as Adreno 650)
+  could close a few minutes into play, and sometimes kept closing until the instance was restarted. Two causes on
+  Kiln's side were fixed: a drawing context handed from one game thread to another could arrive on the Mac before the
+  first thread had let it go, and the game got no answer to some visibility checks.
+- **Smoother, steadier OpenGL ES games.** Android no longer waits for the Mac's GPU to finish each frame before it
+  starts the next one, neither in the game nor when it puts the game on screen, so the processor and the GPU now work
+  at the same time. Genshin Impact holds 57 to 60 fps for long stretches, goes above 60 in light scenes at 120 Hz, and
+  motion blur no longer drags the frame rate down.
+- **Kiln uses much less of your Mac's processor.** Idle connections between Android and the Mac no longer keep
+  processor cores busy: with Genshin Impact running, Kiln went from about three cores to under two.
 
 ## Known limitations
 
@@ -135,6 +129,10 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
   Mali-G68) and a screenshot.
 - **M1 and M2 Macs are still untested.** 0.0.4 sized the graphics memory window to fit them, but nobody has reported
   back yet: if you have an M1 or M2 Mac, please tell us whether Kiln starts.
+- **OpenGL ES games can still dip below 60 fps** in heavy scenes, and Genshin Impact's in-game menu is slow on an
+  OpenGL ES profile. Vulkan profiles (such as Adreno 740) are usually smoother.
+- **Genshin Impact on an OpenGL ES profile can still close** after a long session (about once an hour in our tests).
+  The cause is inside the game; Vulkan profiles (such as Adreno 740) are not affected.
 - **Storage is set once.** Choose it before the instance's first start.
 - **`adb root` is not available** in the new image (it is a `user` build). `adb shell` works, without any key to set up.
 - **"Limited connection" notice.** On the very first boot Android may briefly show it while the network settles. It goes
@@ -181,6 +179,6 @@ android-lineage-qemu project, MindTheGapps, any mobile operator or any device ma
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.5-alpha.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.6-alpha.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
