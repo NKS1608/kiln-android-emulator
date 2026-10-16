@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.4-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.5-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.4-alpha"><b>⬇ Download Kiln 0.0.4-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.5-alpha"><b>⬇ Download Kiln 0.0.5-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -52,7 +52,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.4-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.4-alpha) and open it.
+1. Download **`Kiln-0.0.5-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.5-alpha) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this alpha is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -64,8 +64,8 @@ instance with the Low preset.
 
 **Coming from an earlier alpha?** Your instances keep working with the image they were created with. The new Android image
 is used by instances you create after updating: create a new one to get it (apps and data do not move between images).
-Sound, Bluetooth and the OpenGL ES improvements that live inside Android appear only on instances made from the new
-image; the shader cache, the black-screen fix and the faster game loads work for every instance.
+The browser fixes below live inside Android, so they appear only on instances made from the new image; the water fix,
+the WebGL crash fix, the texture fix and the memory savings work for every instance.
 
 ## About the Android image
 
@@ -100,28 +100,24 @@ image; the shader cache, the black-screen fix and the faster game loads work for
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.4-alpha
+## What's new in 0.0.5-alpha
 
-- **Sound.** Android's audio now plays on your Mac: games, videos and notifications. The microphone is still silent.
-- **Bluetooth is on.** Android sees a Bluetooth adapter, so the *Sound & vibration* settings no longer close on their own
-  and Google Play stops hiding apps that require Bluetooth. It is virtual: no real device can be paired yet.
-- **Games load faster after the first time.** Compiled shaders are kept in one cache per graphics profile, shared by all
-  your instances and kept across updates. OpenGL ES games also get their saved shader programs back: Genshin Impact
-  rebuilt about 500 of them on every start before.
-- **Smoother OpenGL ES games.** Android waits for the Mac far less on every frame: occlusion checks and state queries
-  take one trip instead of two or three, and Android no longer waits for the Mac's GPU to finish a frame before it starts
-  preparing the next one. Vulkan-on-Metal now runs with asynchronous submits and Metal argument buffers by default.
-- **Genshin Impact no longer crashes on Vulkan.** It declares some vertex data as integers and reads it as decimals;
-  Kiln now converts it the way a phone's GPU does, where the Mac's graphics stack refused the whole shader.
-- **Fewer hitches in Vulkan games** that send work to the GPU from several threads at once.
-- **A newer graphics translator.** Kiln now builds its own ANGLE (the OpenGL ES layer) from a 2026 version instead of
-  the 2022 one it borrowed.
-- **No more black picture with the sound still playing.** A game that moved its drawing from one thread to another could
-  lose its picture until you went to the home screen and back.
-- **Attempted fix for M1 and M2 Macs.** The test builds of this release did not start on Macs with an M1 or M2 chip
-  (their smaller address space left no room for the graphics memory window). This release sizes that window to fit
-  them, but it has not been tried on one yet: if you have an M1 or M2 Mac, please tell us whether it starts.
-- **Frame counter.** *Developer → Show FPS* (⌥⌘F) in the player shows the frames per second in a corner of the window.
+- **Water renders correctly in OpenGL ES games.** In Genshin Impact with an OpenGL ES graphics profile (such as Adreno
+  650), water no longer shows through rocks, grass, characters and the sky. The game asks the GPU to throw away depth
+  information it no longer needs; on the Mac that discarded depth a later pass still read. Kiln now keeps it.
+- **WebGL pages no longer bring the emulator down.** Heavy WebGL content in the browser could make the Mac's GPU time
+  out after a few seconds, and Kiln then closed. It now runs for minutes without a hitch.
+- **No more magenta bands or repeated parts in web pages.** The browser could show pieces of a page before they were
+  drawn. This was a side effect of a speed-up in 0.0.4 that gave no measurable gain, so it was removed.
+- **No more magenta textures in Vulkan games.** Compressed textures (ASTC, the format most Android games use) are now
+  read by the Mac's GPU directly instead of being converted first, which also removes the conversion errors.
+- **Android gives memory back to your Mac.** Memory Android frees is now returned to macOS while the instance runs,
+  instead of staying with Kiln until it closes.
+- **Frames shared without copies.** The OpenGL ES and Vulkan sides of the GPU now share each frame in place instead of
+  copying it, which takes work off the CPU on every frame.
+- **More accurate OpenGL ES occlusion checks.** Games that ask whether an object is visible no longer get a made-up
+  answer for checks they never started.
+- **Key mapping editor:** deleting a selected control no longer closes the player.
 
 ## Known limitations
 
@@ -135,10 +131,10 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
 - **One Android version.** Android 16 only for now. More versions are planned.
 - **No microphone, camera, calls or mobile data** inside Android yet: the SIM registers on its network, and the internet
   comes from the Wi-Fi. Bluetooth is virtual and cannot pair with real devices.
-- **Some games may show rendering glitches** with the new graphics translator (seen in Genshin Impact on a Vulkan
-  profile). Please report the game and a screenshot.
-- **Some OpenGL ES effects are still wrong.** In Genshin Impact with an OpenGL ES graphics profile (such as Adreno 650),
-  water renders black. Vulkan profiles (such as Adreno 740) render it correctly: use one for that game.
+- **Some games may still show rendering glitches.** Please report the game, its graphics profile (Adreno 740, 650 or
+  Mali-G68) and a screenshot.
+- **M1 and M2 Macs are still untested.** 0.0.4 sized the graphics memory window to fit them, but nobody has reported
+  back yet: if you have an M1 or M2 Mac, please tell us whether Kiln starts.
 - **Storage is set once.** Choose it before the instance's first start.
 - **`adb root` is not available** in the new image (it is a `user` build). `adb shell` works, without any key to set up.
 - **"Limited connection" notice.** On the very first boot Android may briefly show it while the network settles. It goes
@@ -185,6 +181,6 @@ android-lineage-qemu project, MindTheGapps, any mobile operator or any device ma
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.4-alpha.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.5-alpha.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
