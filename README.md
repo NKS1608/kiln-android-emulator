@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.3-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.4-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.3-alpha"><b>⬇ Download Kiln 0.0.3-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.4-alpha"><b>⬇ Download Kiln 0.0.4-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -52,7 +52,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.3-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.3-alpha) and open it.
+1. Download **`Kiln-0.0.4-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.4-alpha) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this alpha is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -64,7 +64,8 @@ instance with the Low preset.
 
 **Coming from an earlier alpha?** Your instances keep working with the image they were created with. The new Android image
 is used by instances you create after updating: create a new one to get it (apps and data do not move between images).
-The new phone details (system-on-chip, board, SKU) and the faster start appear only on instances made from the new image.
+Sound, Bluetooth and the OpenGL ES improvements that live inside Android appear only on instances made from the new
+image; the shader cache, the black-screen fix and the faster game loads work for every instance.
 
 ## About the Android image
 
@@ -77,7 +78,7 @@ The new phone details (system-on-chip, board, SKU) and the faster start appear o
   which depend on Google Play services can be tried in this alpha. They are not part of LineageOS and may be removed or
   replaced in later releases.
 - **Left out on purpose:** music player, recorder, calculator, clock, calendar, contacts, messaging, the setup wizard,
-  always-on display, hotspot and tethering, Bluetooth and casting.
+  always-on display, hotspot and tethering, and casting.
 
 ## Using Kiln
 
@@ -99,23 +100,23 @@ The new phone details (system-on-chip, board, SKU) and the faster start appear o
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.3-alpha
+## What's new in 0.0.4-alpha
 
-- **Starts on macOS 14 and later.** The 0.0.2-alpha download was built for the newest macOS only and did not start on older
-  ones. The runtime is now built for macOS 14 (and is about 90 MB smaller).
-- **A faster start.** The new Android image no longer goes through a UEFI firmware step: Kiln hands it the kernel and the
-  phone's identity directly, which saves about 0.6 seconds on every boot.
-- **A more convincing phone.** Device information apps now show the phone's chip and board (for example a Snapdragon 8 Gen 2
-  for a Galaxy S23 Ultra, a Tensor G3 for a Pixel 8) and an SKU in the maker's usual shape, instead of "VirtIO
-  virtio_arm64only". The hardware name still reads `virtio`, because Android finds its drivers by that name.
-- **Presets that fit your Mac.** Low, Medium and High now follow your Mac's performance cores and memory: on a Mac with
-  four performance cores and 16 GB, High is 4 CPUs and 6 GiB instead of 6 CPUs and 8 GiB, which crowded the efficiency
-  cores.
-- **Less work for a hidden game.** While an instance's window is minimized or covered, it renders at 10 frames per second
-  and returns to full speed when you look at it again.
-- **Steadier.** A malformed command from Android no longer crashes the player, Stop no longer cuts off Android while it is
-  still saving, and several memory-safety problems in the graphics path are fixed (memory the renderer freed could still be
-  reached from inside Android, and two race conditions between Android and the renderer).
+- **Sound.** Android's audio now plays on your Mac: games, videos and notifications. The microphone is still silent.
+- **Bluetooth is on.** Android sees a Bluetooth adapter, so the *Sound & vibration* settings no longer close on their own
+  and Google Play stops hiding apps that require Bluetooth. It is virtual: no real device can be paired yet.
+- **Games load faster after the first time.** Compiled shaders are kept in one cache per graphics profile, shared by all
+  your instances and kept across updates. OpenGL ES games also get their saved shader programs back: Genshin Impact
+  rebuilt about 500 of them on every start before.
+- **Smoother OpenGL ES games.** Android waits for the Mac far less on every frame: occlusion checks and state queries
+  take one trip instead of two or three, and Android no longer waits for the Mac's GPU to finish a frame before it starts
+  preparing the next one. Vulkan-on-Metal now runs with asynchronous submits and Metal argument buffers by default.
+- **No more black picture with the sound still playing.** A game that moved its drawing from one thread to another could
+  lose its picture until you went to the home screen and back.
+- **Attempted fix for M1 and M2 Macs.** The test builds of this release did not start on Macs with an M1 or M2 chip
+  (their smaller address space left no room for the graphics memory window). This release sizes that window to fit
+  them, but it has not been tried on one yet: if you have an M1 or M2 Mac, please tell us whether it starts.
+- **Frame counter.** *Developer → Show FPS* (⌥⌘F) in the player shows the frames per second in a corner of the window.
 
 ## Known limitations
 
@@ -127,8 +128,10 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
   run, and games or apps that look for emulators can still tell. Signing in to a Google account has not been fully
   tested yet.
 - **One Android version.** Android 16 only for now. More versions are planned.
-- **No microphone, camera, Bluetooth, calls or mobile data** inside Android yet: the SIM registers on its network, and the
-  internet comes from the Wi-Fi. Without Bluetooth, the Play Store hides the few apps that require it.
+- **No microphone, camera, calls or mobile data** inside Android yet: the SIM registers on its network, and the internet
+  comes from the Wi-Fi. Bluetooth is virtual and cannot pair with real devices.
+- **Some OpenGL ES effects are still wrong.** In Genshin Impact with an OpenGL ES graphics profile (such as Adreno 650),
+  water renders black. Vulkan profiles (such as Adreno 740) render it correctly: use one for that game.
 - **Storage is set once.** Choose it before the instance's first start.
 - **`adb root` is not available** in the new image (it is a `user` build). `adb shell` works, without any key to set up.
 - **"Limited connection" notice.** On the very first boot Android may briefly show it while the network settles. It goes
@@ -153,14 +156,15 @@ You will also find **Support Kiln…** in the Kiln menu of the app.
 Click **Error Report** in the launcher. It saves a zip with the instance's settings and logs in your Downloads folder.
 Attach it to your report, along with what you did and what you expected. Nothing is sent anywhere by the app.
 
-Contact: **[contato@nks1608.tec.br](mailto:contato@nks1608.tec.br)**
+Report it as an [issue on GitHub](https://github.com/NKS1608/kiln-android-emulator/issues). A Kiln Discord server is
+coming soon, for reports, questions and news.
 
 ## Licensing
 
 Kiln (the launcher, the player and `kilnctl`) is proprietary software. It ships open-source components under their own
 licenses:
 - QEMU and Kiln's virtual devices, under GPL-2.0-or-later. Their complete source code is available on request under
-  the written offer in `OFFER.txt`, using the contact address above.
+  the written offer in `OFFER.txt`, through the [GitHub issues](https://github.com/NKS1608/kiln-android-emulator/issues).
 - Permissive components, listed in `THIRD-PARTY-NOTICES.txt`.
 
 The full licensing map is in `LICENSE.txt`.
@@ -174,6 +178,6 @@ android-lineage-qemu project, MindTheGapps, any mobile operator or any device ma
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.3-alpha.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.4-alpha.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
