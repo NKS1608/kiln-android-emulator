@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.7-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.7.1-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.7-beta"><b>⬇ Download Kiln 0.0.7-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.7.1-beta"><b>⬇ Download Kiln 0.0.7.1-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -55,7 +55,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.7-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.7-beta) and open it.
+1. Download **`Kiln-0.0.7.1-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.7.1-beta) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this beta is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -109,7 +109,14 @@ alphas, which used another Android image, cannot be updated in place: create a n
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.7-beta
+## What's new in 0.0.7.1-beta
+
+- **Unreal Engine 4 games show their picture.** Games such as PUBG Mobile stayed on a black screen on an OpenGL ES
+  profile: Android refused the kind of drawing context these games ask for, so they never drew a frame. PUBG Mobile
+  now reaches its login screen. Already on
+  0.0.7? Select the instance, stopped, and click **Update Android**.
+
+## Also new since 0.0.6 (0.0.7-beta)
 
 - **OpenGL ES games run like on a phone.** Android now gets real GPU fences from the Mac, as a phone's graphics driver
   gives them: no app or game waits for the whole GPU any more, and none can run far ahead of it either. Genshin Impact on
@@ -197,6 +204,6 @@ android-lineage-qemu project, MindTheGapps, any mobile operator or any device ma
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.7-beta.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.7.1-beta.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
