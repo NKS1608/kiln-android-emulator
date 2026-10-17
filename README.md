@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.7.1-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.8-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.7.1-beta"><b>⬇ Download Kiln 0.0.7.1-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.8-beta"><b>⬇ Download Kiln 0.0.8-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -55,7 +55,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.7.1-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.7.1-beta) and open it.
+1. Download **`Kiln-0.0.8-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.8-beta) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this beta is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -109,12 +109,37 @@ alphas, which used another Android image, cannot be updated in place: create a n
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.7.1-beta
+## What's new in 0.0.8-beta
+
+- **Better OpenGL ES graphics.** Many games on an OpenGL ES profile draw more correctly, and Genshin Impact plays
+  much longer before closing in our tests.
+- **More stable.** Fixes for rare freezes of the picture and for an instance that would not shut down.
+- **Lighter on your Mac.** Android's input and screen-rotation services no longer keep a processor busy while idle:
+  an idle instance now uses about 2% of Android's processors, and the emulator about a quarter less of your Mac.
+- **Turning the phone feels real to games.** Rotating the screen now turns the phone over about 0.4 s: the gyroscope
+  sees the turn and gravity swings round with it, instead of jumping.
+- **No printing service.** Android's print spooler and its Quick Settings tiles for battery saver, modes, device
+  controls, USB tethering and rotation are gone; Bluetooth tethering and the Safety & emergency page too.
+- Already on 0.0.7? Select the instance, stopped, and click **Update Android**. The first time a game opens after the
+  update it may prepare its graphics again once.
+
+**About the next updates.** Graphics updates will come at a slower pace from now on, so that each one can be built on
+more of your reports. Please keep sending **Error Report** zips when a game closes or draws something wrong: they are
+what the next graphics update will be made from.
+
+**A personal note.** These last releases came out of a stretch of hyperfocus, with too little sleep and a lot of testing.
+I will use this slower pace to rest for a few days. Kiln is not going anywhere: reports keep being read, and work
+picks up again soon.
+
+**Kiln needs more test machines.** Today it is developed and tested on a single Mac. Donations go first to more Macs
+(older chips such as M1 and M2, and other macOS versions), so that problems are caught before a release instead of
+after it. If Kiln is useful to you, [supporting it on Ko-fi](https://ko-fi.com/nks1608) helps directly.
+
+## Also new in 0.0.7.1-beta
 
 - **Unreal Engine 4 games show their picture.** Games such as PUBG Mobile stayed on a black screen on an OpenGL ES
   profile: Android refused the kind of drawing context these games ask for, so they never drew a frame. PUBG Mobile
-  now reaches its login screen. Already on
-  0.0.7? Select the instance, stopped, and click **Update Android**.
+  now reaches its login screen.
 
 ## Also new since 0.0.6 (0.0.7-beta)
 
@@ -156,9 +181,8 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
   back yet: if you have an M1 or M2 Mac, please tell us whether Kiln starts.
 - **OpenGL ES games can still dip below 60 fps** in heavy scenes, and Genshin Impact's in-game menu is slow on an
   OpenGL ES profile. Vulkan profiles (such as Adreno 740) are usually smoother.
-- **Genshin Impact on an OpenGL ES profile can still close** after a long session. This beta includes a fix for one
-  possible cause on Kiln's side; please report how long it plays for you. Vulkan profiles (such as Adreno 740) are not
-  affected.
+- **Genshin Impact on an OpenGL ES profile can still close** after a long session, most often on the first launch after
+  an update. Please report how long it plays for you. Vulkan profiles (such as Adreno 740) are not affected.
 - **Storage is set once.** Choose it before the instance's first start.
 - **`adb root` is not available** in the new image (it is a `user` build). `adb shell` works, without any key to set up.
 - **"Limited connection" notice.** On the very first boot Android may briefly show it while the network settles. It goes
@@ -171,8 +195,9 @@ Kiln is free. If it is useful to you, you can help it grow:
 
 <p align="center"><a href="https://ko-fi.com/nks1608"><b>☕ Support Kiln on Ko-fi</b></a></p>
 
-The first goal is an Apple Developer account, so that Kiln can be notarized and opens without the security warning.
-After that: more Android versions, and more Macs to test on. Donations are
+The goals, in order: more Macs to test on (Kiln is developed on a single Mac today, so M1 and M2 Macs and older macOS
+versions go untested), an Apple Developer account so that Kiln can be notarized and opens without the security
+warning, and more Android versions. Donations are
 voluntary and do not unlock anything: every feature stays available to everyone.
 
 You will also find **Support Kiln…** in the Kiln menu of the app.
@@ -204,6 +229,6 @@ android-lineage-qemu project, MindTheGapps, any mobile operator or any device ma
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.7.1-beta.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.8-beta.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
