@@ -7,13 +7,13 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.6-alpha</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.7-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.6-alpha"><b>⬇ Download Kiln 0.0.6-alpha</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.7-beta"><b>⬇ Download Kiln 0.0.7-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
-> **This is an alpha.** It runs Android 16 well enough for daily testing and real games: expect rough edges, and please
+> **This is a beta.** It runs Android 16 well enough for daily use and real games: some rough edges remain, so please
 > tell us what breaks (see [Reporting a problem](#reporting-a-problem)).
 > Enjoying it? [Support Kiln on Ko-fi](https://ko-fi.com/nks1608).
 
@@ -34,8 +34,11 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 - **Made for games.**
   - **Key mapping per game.** Drag taps, a WASD joystick and swipes onto the screen from a side panel, then press the key.
     Combos such as ⇧Q or ⌃1 work, and several keys can be held at once. Each game keeps its own mapping, and Kiln switches
-    to it as soon as the game comes to the front. Press F10 to type in a game's chat.
-  - **Game controllers.** A controller connected to your Mac shows up in Android as a standard gamepad.
+    to it as soon as the game comes to the front. Press ⌃⌥ (Control+Option) to type in a game's chat.
+  - **Camera control with the mouse.** A mouse area turns mouse movement into a thumb on the game's camera; the
+    mouse buttons can be keys of their own, and the joystick takes any four keys.
+  - **Game controllers.** A controller connected to your Mac shows up in Android as a standard gamepad, and only while it
+    is connected.
   - **Mouse look** for shooters (in the default mapping), rotation that follows the game, and refresh rates up to 144 Hz.
 - **Every instance is its own phone.** Pick from 16 device profiles (Samsung Galaxy S24 Ultra, Pixel 9 Pro, OnePlus 12,
   ROG Phone 8 and more): Android reports that phone's model, build fingerprint, baseband, board, system-on-chip and SKU. Each instance has its own
@@ -52,9 +55,9 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.6-alpha.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.6-alpha) and open it.
+1. Download **`Kiln-0.0.7-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.7-beta) and open it.
 2. Drag **Kiln** to **Applications**.
-3. The first time only: this alpha is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
+3. The first time only: this beta is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
 4. Click **+** to create an instance, then **Start**.
 
@@ -62,10 +65,12 @@ Each instance gets its own disks, about 3 GB on your Mac to start, growing as yo
 choose is what Android shows; your Mac only stores what is written). Plan on 4 GB of RAM per running
 instance with the Low preset.
 
-**Coming from an earlier alpha?** Your instances keep working with the image they were created with. The new Android image
-is used by instances you create after updating: create a new one to get it (apps and data do not move between images).
-The fix for games closing on their own and the smoother frame pacing live inside Android, so they appear only on
-instances made from the new image; the other improvements below work for every instance.
+**Coming from an alpha?** Instances made with an earlier version show **Update** in the launcher: select one while it
+is stopped and click **Update Android**. It gets this version's Android and keeps its apps, data and accounts. The old
+system is kept: delete it with **Delete Previous System** once the instance works, or use **Go Back to Previous
+System** if something is wrong. Most of what is new
+below lives inside Android (graphics, sound, touch), so an instance gets it once updated. Instances from the first two
+alphas, which used another Android image, cannot be updated in place: create a new instance for them.
 
 ## About the Android image
 
@@ -75,7 +80,7 @@ instances made from the new image; the other improvements below work for every i
   [android-lineage-qemu](https://github.com/jqssun/android-lineage-qemu), whose images earlier versions of Kiln shipped.
 - **Google apps:** only Google Play Store, Google Play services and the Google Services Framework, from
   [MindTheGapps](https://github.com/MindTheGapps) (Android 16), included **for compatibility testing only**, so that apps
-  which depend on Google Play services can be tried in this alpha. They are not part of LineageOS and may be removed or
+  which depend on Google Play services can be tried in this beta. They are not part of LineageOS and may be removed or
   replaced in later releases.
 - **Left out on purpose:** music player, recorder, calculator, clock, calendar, contacts, messaging, the setup wizard,
   always-on display, hotspot and tethering, and casting.
@@ -85,14 +90,18 @@ instances made from the new image; the other improvements below work for every i
 | To | Do |
 | --- | --- |
 | Create an instance | **+** in the launcher (pick the phone, screen and performance in its settings) |
-| Back / Home / Recents | Toolbar buttons, or right click / middle click |
+| Get a newer Android for an instance | **Update Android** in the launcher, with the instance stopped (apps and data stay) |
+| Back / Home / Recents | Toolbar buttons; middle click is Home |
+| Long press (menus, text selection, moving icons) | Right click |
 | Volume | Toolbar **−** and **+**, like a phone's volume keys |
 | Install an app | Toolbar **Install APK**, then choose `.apk` / `.xapk` / `.apkm` / `.apks` files |
 | Choose the storage size | Instance settings → **Storage**, before its first start |
 | Choose the SIM's country | Instance settings → **SIM** (or **None**); **New** draws another SIM |
 | Map keys for a game | Open the game, then toolbar **Key Mapping** (⌘K) |
-| Turn a game's mapping off and on | **F10** |
+| Turn a game's mapping off and on, and free or hold the mouse | **⌃⌥** (Control+Option), or F10 |
+| Move a game's camera with the mouse | Key Mapping → **Mouse Area**, placed over the camera |
 | Mouse look (default mapping) | **`** (backtick) |
+| Full screen with only the game | The window's green button, or ⌃⌘F |
 | Switch portrait / landscape | Toolbar **Rotate** (⌘R) |
 | Open a shell in Android | **Shell** in the launcher, while the instance runs |
 | Save the logs for a bug report | **Error Report** in the launcher |
@@ -100,22 +109,31 @@ instances made from the new image; the other improvements below work for every i
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.6-alpha
+## What's new in 0.0.7-beta
 
-- **OpenGL ES games close far less often.** Genshin Impact with an OpenGL ES graphics profile (such as Adreno 650)
-  could close a few minutes into play, and sometimes kept closing until the instance was restarted. Two causes on
-  Kiln's side were fixed: a drawing context handed from one game thread to another could arrive on the Mac before the
-  first thread had let it go, and the game got no answer to some visibility checks.
-- **Smoother, steadier OpenGL ES games.** Android no longer waits for the Mac's GPU to finish each frame before it
-  starts the next one, neither in the game nor when it puts the game on screen, so the processor and the GPU now work
-  at the same time. Genshin Impact holds 57 to 60 fps for long stretches, goes above 60 in light scenes at 120 Hz, and
-  motion blur no longer drags the frame rate down.
-- **Kiln uses much less of your Mac's processor.** Idle connections between Android and the Mac no longer keep
-  processor cores busy: with Genshin Impact running, Kiln went from about three cores to under two.
+- **OpenGL ES games run like on a phone.** Android now gets real GPU fences from the Mac, as a phone's graphics driver
+  gives them: no app or game waits for the whole GPU any more, and none can run far ahead of it either. Genshin Impact on
+  an OpenGL ES profile played 40 minutes without closing in our tests, where it used to close within 2 to 12, and the
+  browser keeps its sharpness with no flicker.
+- **Sound about 100 ms closer to the picture.** Android's sound now leaves in 21 ms steps instead of 85, and Kiln starts
+  playing sooner.
+- **Faster, more natural input.** The mouse and keyboard go straight to Android without passing through an emulated USB
+  mouse and keyboard, so keys arrive up to 8 ms sooner and the pointer follows at once. Touches land with a finger's
+  small offset, tremble and varying pressure instead of on the exact same pixel every time.
+- **Key mapping, more of it.** Place a **mouse area** over a game's camera: moving the mouse drags a thumb there, which
+  lifts and lands again at the centre when it runs out of room or the mouse rests. Mouse buttons can be keys of their
+  own, the joystick takes any four keys, and **⌃⌥** turns the mapping off and on and frees or holds the mouse.
+- **Right click is a long press,** the touch screen's way to open menus, select text and move icons. The wheel scrolls
+  the way the window shows the screen, in landscape too.
+- **Full screen is the game alone,** with no toolbar. A controller appears in Android only while one is connected to
+  your Mac, and the "show taps" dots are gone.
+- **Update Android without losing anything.** Instances made with an earlier version get this version's Android with
+  one click in the launcher, keeping their apps, data and accounts.
+- **Android starts in about 20 seconds.**
 
 ## Known limitations
 
-- **Alpha quality.** Some things will break. Back up anything you care about inside an instance.
+- **Beta quality.** Some things may still break. Back up anything you care about inside an instance.
 - **macOS 14 to 26 are untested for full sessions.** The app and its runtime start on macOS 14; a complete Android session
   has been run on macOS 27 only. Reports from older systems are very welcome.
 - **Not notarized.** macOS asks for confirmation the first time (see [Install](#install)).
@@ -131,14 +149,14 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
   back yet: if you have an M1 or M2 Mac, please tell us whether Kiln starts.
 - **OpenGL ES games can still dip below 60 fps** in heavy scenes, and Genshin Impact's in-game menu is slow on an
   OpenGL ES profile. Vulkan profiles (such as Adreno 740) are usually smoother.
-- **Genshin Impact on an OpenGL ES profile can still close** after a long session (about once an hour in our tests).
-  The cause is inside the game; Vulkan profiles (such as Adreno 740) are not affected.
+- **Genshin Impact on an OpenGL ES profile can still close** after a long session. This beta includes a fix for one
+  possible cause on Kiln's side; please report how long it plays for you. Vulkan profiles (such as Adreno 740) are not
+  affected.
 - **Storage is set once.** Choose it before the instance's first start.
 - **`adb root` is not available** in the new image (it is a `user` build). `adb shell` works, without any key to set up.
 - **"Limited connection" notice.** On the very first boot Android may briefly show it while the network settles. It goes
   away by itself.
-- Mouse look works with the default mapping (F10 in a game that has no mapping of its own). The editor cannot place it
-  yet, so a game with its own mapping has no mouse look.
+- **No Widevine.** Video apps that need Google's Widevine DRM do not play protected content.
 
 ## Support Kiln
 
@@ -179,6 +197,6 @@ android-lineage-qemu project, MindTheGapps, any mobile operator or any device ma
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.6-alpha.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.7-beta.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
