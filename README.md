@@ -102,7 +102,7 @@ alphas, which used another Android image, cannot be updated in place: create a n
 | Choose the SIM's country | Instance settings → **SIM** (or **None**); **New** draws another SIM |
 | Map keys for a game | Open the game, then toolbar **Key Mapping** (⌘K) |
 | Turn a game's mapping on and off, and hold or free the mouse | **⌃⌥** (Control+Option), or F10 (a game opens with it off) |
-| Use the mouse as a mouse in a game | Key Mapping → **Mouse as a mouse**, then **⌃⌥** |
+| Play with mouse and keyboard, as on a PC | Key Mapping → **Mouse and keyboard mode**, then **⌃⌥** |
 | Move a game's camera with the mouse | Key Mapping → **Mouse Area**, placed over the camera |
 | Mouse look (default mapping) | **`** (backtick) |
 | Full screen with only the game | The window's green button, or ⌃⌘F |
@@ -121,8 +121,9 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
 - **Recovery and GSI.** The launcher opens an instance's recovery in its own window (arrow keys and Enter), and a new
   instance can run a GSI (Generic System Image) instead of Kiln's Android: the arrow next to **+**.
 - **No Google apps in the image.** Install them with **Install Zip** (see [About the Android image](#about-the-android-image)).
-- **The mouse as a mouse.** In Key Mapping, **Mouse as a mouse** gives a game Android's own mouse (cursor, right button,
-  wheel) instead of touches, for games and apps made for one. **⌃⌥** turns it on and off with the rest of the mapping.
+- **Mouse and keyboard mode.** In Key Mapping, **Mouse and keyboard mode** gives a game Android's own mouse (cursor,
+  right button, wheel) and every key as typed, with nothing mapped, for games made for both (such as Minecraft).
+  **⌃⌥** turns it on and off.
 - **A game's mapping now opens off,** so the keyboard and mouse work as usual until you press **⌃⌥** (or F10). Right
   after you save a mapping in the editor it is on.
 - **Sturdier graphics.** The graphics part now runs in a process of its own: if it ever fails, Android keeps running
