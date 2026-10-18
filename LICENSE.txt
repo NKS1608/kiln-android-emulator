@@ -5,9 +5,10 @@ receives a binary; see scripts/export-open-source.sh):
   qemu/            GPL-2.0-or-later   devices compiled into QEMU
   kernel/vaddress/ GPL-2.0            Linux kernel module (vaddress_uapi.h: GPL-2.0 WITH Linux-syscall-note)
   kernel/virt_wifi/ GPL-2.0           patch to the Linux virt_wifi driver (built into the Android image's kernel modules)
-  gfx/             GPL-2.0-or-later   renderer bridge that QEMU loads with dlopen (until it runs in its own process,
-                                      see docs/LICENSING.md)
+  kernel/v4l2loopback/ GPL-2.0        the camera's video device module
   scripts/apply-qemu.sh               hooks the files above into a QEMU tree
+  scripts/build-qemu.sh               builds QEMU and the libraries it links as the release does
+  qemu/include/hw/misc/kiln-renderd.h and vaddress-ring.h are GPL-2.0-or-later OR MIT: QEMU and kiln-renderd both use them
 
 Permissive, shipped as binaries with their notices (docs/THIRD-PARTY-NOTICES.txt):
   guest/gles/      MIT / Apache-2.0   gfxstream guest and goldfish gralloc/HWC derived code
@@ -15,6 +16,8 @@ Permissive, shipped as binaries with their notices (docs/THIRD-PARTY-NOTICES.txt
 
 Proprietary, all rights reserved (no licence is granted, no source is offered):
   launcher/        KilnCore, Kiln (launcher), Kiln Player, kilnctl
-  scripts/         everything except apply-qemu.sh
+  renderd/         kiln-renderd, the renderer in its own process (QEMU talks to it over a socket)
+  gfx/             the renderer bridge kiln-renderd links
+  scripts/         everything except apply-qemu.sh and build-qemu.sh
   docs/            specifications and notes
   guest/vendor-overlay/, guest/vendor/   rc files and the guest agent

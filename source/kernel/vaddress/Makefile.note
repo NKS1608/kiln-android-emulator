@@ -1,0 +1,1 @@
+# Out-of-tree build: make -C <kernel-build-dir> M=$(PWD) LLVM=1 ARCH=arm64 modules

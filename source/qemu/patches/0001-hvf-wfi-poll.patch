@@ -1,0 +1,56 @@
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index b00a7e1..ca0f2d9 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -2270,6 +2270,40 @@ static int hvf_arm_wfi_timer(CPUState *cpu, uint64_t ctl, uint64_t cval)
+     return 0;
+ }
+ 
++/*
++ * KILN_HVF_WFI_POLL_US=n: before a vCPU halts for WFI, look for work for up to n microseconds instead of sleeping at once. A
++ * wake-up from the halt costs a futex wake and a thread switch; guests that sleep and wake all the time (a game's threads)
++ * feel it. 0 (the default) halts at once. It costs host CPU while the guest is idle.
++ */
++static int64_t hvf_wfi_poll_ns(void)
++{
++    static int64_t ns = -1;
++
++    if (ns < 0) {
++        const char *v = getenv("KILN_HVF_WFI_POLL_US");
++        ns = v ? MAX(atoll(v), 0) * 1000 : 0;
++    }
++    return ns;
++}
++
++/* Spin without the BQL (the main loop raises the interrupts a halted vCPU waits for); true when work arrived. */
++static bool hvf_wfi_poll(CPUState *cpu)
++{
++    const int64_t poll_ns = hvf_wfi_poll_ns();
++    int64_t end;
++
++    if (!poll_ns) {
++        return false;
++    }
++    end = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + poll_ns;
++    bql_unlock();
++    while (!cpu_has_work(cpu) && qemu_clock_get_ns(QEMU_CLOCK_REALTIME) < end) {
++        cpu_relax();
++    }
++    bql_lock();
++    return cpu_has_work(cpu);
++}
++
+ static int hvf_wfi(CPUState *cpu)
+ {
+     if (cpu_has_work(cpu)) {
+@@ -2280,6 +2314,10 @@ static int hvf_wfi(CPUState *cpu)
+         return 0;
+     }
+ 
++    if (hvf_wfi_poll(cpu)) {
++        return 0;
++    }
++
+     if (!hvf_irqchip_in_kernel()) {
+         uint64_t ctl, cval;
+         hv_return_t r;

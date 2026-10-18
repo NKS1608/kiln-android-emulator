@@ -1,0 +1,4 @@
+v4l2loopback v0.15.1 (https://github.com/umlaeute/v4l2loopback, tag v0.15.1, commit 7546a42), GPL-2.0 (COPYING), unmodified
+except for this note and the Makefile (the same as kernel/vaddress: built by the Android kernel build, TARGET_KERNEL_EXT_MODULES).
+It gives the guest a V4L2 video device that kiln-camera (guest/camera) writes the host's camera frames into, and that AOSP's
+external camera HAL reads like a UVC webcam.

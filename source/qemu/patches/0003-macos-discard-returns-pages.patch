@@ -1,0 +1,20 @@
+diff --git a/system/physmem.c b/system/physmem.c
+index c21ea92..0d1f688 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -4182,7 +4182,15 @@ int ram_block_discard_shared_range(RAMBlock *rb, uint64_t offset, size_t length)
+             if (qemu_ram_is_shared(rb) && rb->fd < 0) {
+                 ret = madvise(host_startaddr, length, QEMU_MADV_REMOVE);
+             } else {
++#if defined(__APPLE__) && defined(MADV_FREE_REUSABLE)
++                /* Kiln: on macOS MADV_DONTNEED is only advice and the pages stay in the process's footprint, so
++                 * memory the guest gave back (virtio-balloon free page reporting) never returned to the Mac.
++                 * MADV_FREE_REUSABLE hands them to the system at once. The range does not read back as zeros
++                 * afterwards: fine for free pages; Kiln uses no migration or virtio-mem, which would need zeros. */
++                ret = madvise(host_startaddr, length, MADV_FREE_REUSABLE);
++#else
+                 ret = madvise(host_startaddr, length, QEMU_MADV_DONTNEED);
++#endif
+             }
+             if (ret) {
+                 ret = -errno;

@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-2.0
+# virt_wifi with ssid= and bssid= parameters (see virt_wifi.c); built by build.sh against the guest kernel.
+obj-m += virt_wifi.o

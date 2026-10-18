@@ -1,0 +1,91 @@
+--- a/drivers/net/wireless/virtual/virt_wifi.c
++++ b/drivers/net/wireless/virtual/virt_wifi.c
+@@ -133,31 +133,38 @@
+ 	},
+ };
+ 
+-/* Assigned at module init. Guaranteed locally-administered and unicast. */
++/* Assigned at module init: the `bssid` parameter, or random (locally-administered and unicast). */
+ static u8 fake_router_bssid[ETH_ALEN] __ro_after_init = {};
+ 
+-#define VIRT_WIFI_SSID "VirtWifi"
+-#define VIRT_WIFI_SSID_LEN 8
++/*
++ * Kiln: the network the fake access point offers is a module parameter instead of the fixed "VirtWifi", so each
++ * instance can show its own (passed on the kernel command line as virt_wifi.ssid=... and virt_wifi.bssid=..., which
++ * Android's module loader hands to the module). Both are readable in /sys/module/virt_wifi/parameters.
++ */
++static char *ssid = "VirtWifi";
++module_param(ssid, charp, 0444);
++MODULE_PARM_DESC(ssid, "network name of the fake access point (1 to 32 bytes)");
++static char *bssid = "";
++module_param(bssid, charp, 0444);
++MODULE_PARM_DESC(bssid, "MAC address of the fake access point (aa:bb:cc:dd:ee:ff); random when empty");
+ 
++static u8 virt_wifi_ssid[IEEE80211_MAX_SSID_LEN] __ro_after_init;
++static u8 virt_wifi_ssid_len __ro_after_init;
++
+ static void virt_wifi_inform_bss(struct wiphy *wiphy)
+ {
+ 	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
+ 	struct cfg80211_bss *informed_bss;
+-	static const struct {
+-		u8 tag;
+-		u8 len;
+-		u8 ssid[8];
+-	} __packed ssid = {
+-		.tag = WLAN_EID_SSID,
+-		.len = VIRT_WIFI_SSID_LEN,
+-		.ssid = VIRT_WIFI_SSID,
+-	};
++	u8 ie[2 + IEEE80211_MAX_SSID_LEN];
+ 
++	ie[0] = WLAN_EID_SSID;
++	ie[1] = virt_wifi_ssid_len;
++	memcpy(ie + 2, virt_wifi_ssid, virt_wifi_ssid_len);
+ 	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
+ 					   CFG80211_BSS_FTYPE_PRESP,
+ 					   fake_router_bssid, tsf,
+ 					   WLAN_CAPABILITY_ESS, 0,
+-					   (void *)&ssid, sizeof(ssid),
++					   ie, 2 + virt_wifi_ssid_len,
+ 					   DBM_TO_MBM(-50), GFP_KERNEL);
+ 	cfg80211_put_bss(wiphy, informed_bss);
+ }
+@@ -263,8 +270,8 @@
+ 		container_of(work, struct virt_wifi_netdev_priv, connect.work);
+ 	u8 *requested_bss = priv->connect_requested_bss;
+ 	bool right_addr = ether_addr_equal(requested_bss, fake_router_bssid);
+-	bool right_ssid = priv->connect_requested_ssid_len == VIRT_WIFI_SSID_LEN &&
+-			  !memcmp(priv->connect_requested_ssid, VIRT_WIFI_SSID,
++	bool right_ssid = priv->connect_requested_ssid_len == virt_wifi_ssid_len &&
++			  !memcmp(priv->connect_requested_ssid, virt_wifi_ssid,
+ 				  priv->connect_requested_ssid_len);
+ 	u16 status = WLAN_STATUS_SUCCESS;
+ 
+@@ -669,9 +676,23 @@
+ {
+ 	int err;
+ 
+-	/* Guaranteed to be locally-administered and not multicast. */
+-	eth_random_addr(fake_router_bssid);
++	size_t len = ssid ? strlen(ssid) : 0;
+ 
++	if (len < 1 || len > IEEE80211_MAX_SSID_LEN) {
++		pr_warn("virt_wifi: ssid must be 1 to %d bytes, using VirtWifi\n", IEEE80211_MAX_SSID_LEN);
++		ssid = "VirtWifi";
++		len = strlen(ssid);
++	}
++	memcpy(virt_wifi_ssid, ssid, len);
++	virt_wifi_ssid_len = len;
++
++	if (!bssid || !*bssid || !mac_pton(bssid, fake_router_bssid) || !is_valid_ether_addr(fake_router_bssid)) {
++		if (bssid && *bssid)
++			pr_warn("virt_wifi: bad bssid \"%s\", using a random one\n", bssid);
++		/* Guaranteed to be locally-administered and not multicast. */
++		eth_random_addr(fake_router_bssid);
++	}
++
+ 	err = register_netdevice_notifier(&virt_wifi_notifier);
+ 	if (err)
+ 		return err;

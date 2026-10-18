@@ -19,8 +19,13 @@ ANGLE                                        BSD-3-Clause              https://c
 MoltenVK                                     Apache-2.0                https://github.com/KhronosGroup/MoltenVK
 Vulkan-Loader                                Apache-2.0                https://github.com/KhronosGroup/Vulkan-Loader
 Android Open Source Project, LineageOS       Apache-2.0 (Linux kernel: GPL-2.0)   https://lineageos.org
-Android platform-tools (adb, fastboot)       Apache-2.0 source; the binary comes from Google's platform-tools
-                                             package, whose terms have to be checked before redistribution
+adb, fastboot (AOSP, built with android-tools 37.0.0p1)  Apache-2.0   https://github.com/nmeum/android-tools
+BoringSSL (inside adb)                       OpenSSL and ISC           https://boringssl.googlesource.com/boringssl
+Protocol Buffers (inside adb)                BSD-3-Clause              https://github.com/protocolbuffers/protobuf
+Abseil (inside adb)                          Apache-2.0                https://abseil.io
+Brotli (inside adb)                          MIT                       https://github.com/google/brotli
+LZ4 library (inside adb)                     BSD-2-Clause              https://github.com/lz4/lz4
+{fmt} (inside adb, fastboot)                 MIT                       https://fmt.dev
 
 App icon: the Android robot is reproduced or modified from work created and shared by Google and used according to terms
 described in the Creative Commons 3.0 Attribution License (https://creativecommons.org/licenses/by/3.0/).

@@ -1,0 +1,15 @@
+Kiln open-source parts (kiln revision eafee52)
+
+QEMU: upstream v11.1.2 (https://gitlab.com/qemu-project/qemu) plus the files in qemu/. Apply them with
+  scripts/apply-qemu.sh <qemu source dir>
+then build it, with the libraries it links (glib, pixman, libslirp, zstd, SDL), with
+  scripts/build-qemu.sh
+which holds the exact configure options of the release build and builds for macOS 14 (the paths at its top are the build
+machine's: change DEV for yours).
+
+Guest kernel: https://github.com/LineageOS/android_kernel_virt_virtio at revision 4f6bf47200d9cf735e65cad80823295d2141982c (LineageOS 23.2, device virtio_arm64only),
+built by the Android tree with its own configuration, plus Kiln's modules and changes in kernel/:
+  kernel/vaddress      the vaddress device's driver (Kbuild)
+  kernel/v4l2loopback  the camera's video device
+  kernel/virt_wifi     the change to Linux's virt_wifi driver
+Built with KBUILD_BUILD_USER=kiln KBUILD_BUILD_HOST=kiln.

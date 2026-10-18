@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.8.1-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.9-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.8.1-beta"><b>⬇ Download Kiln 0.0.8.1-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9-beta"><b>⬇ Download Kiln 0.0.9-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -18,7 +18,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 > Enjoying it? [Support Kiln on Ko-fi](https://ko-fi.com/nks1608).
 
 <p align="center">
-  <img src="assets/android-home.png" width="300" alt="Android 16 running in Kiln, with Google Play">
+  <img src="assets/android-home.png" width="300" alt="Android 16 running in Kiln">
 </p>
 
 ## Why Kiln
@@ -28,7 +28,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 - **Real GPU acceleration.** OpenGL ES 3.1 and Vulkan in the guest are rendered on your Mac's GPU through Metal. Games pick
   their Vulkan renderer just as they would on a flagship phone.
 - **Android 16, our own build.** The bundled image is Android 16 (LineageOS 23.2) built from source by Kiln, signed with
-  Kiln's own keys and running with SELinux enforcing, with Google Play included for app compatibility testing (see
+  Kiln's own keys and running with SELinux enforcing; Google apps can be added with **Install Zip** (see
   [About the Android image](#about-the-android-image)). Create an instance and you land straight on the home screen: no
   setup wizard, no lock screen.
 - **Made for games.**
@@ -55,7 +55,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.8.1-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.8.1-beta) and open it.
+1. Download **`Kiln-0.0.9-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9-beta) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this beta is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -78,10 +78,10 @@ alphas, which used another Android image, cannot be updated in place: create a n
   with Kiln's graphics drivers, input, guest agent and fake modem built in. It is a `user` build signed with Kiln's own
   keys (`release-keys`), with SELinux enforcing. Thanks to jqssun's
   [android-lineage-qemu](https://github.com/jqssun/android-lineage-qemu), whose images earlier versions of Kiln shipped.
-- **Google apps:** only Google Play Store, Google Play services and the Google Services Framework, from
-  [MindTheGapps](https://github.com/MindTheGapps) (Android 16), included **for compatibility testing only**, so that apps
-  which depend on Google Play services can be tried in this beta. They are not part of LineageOS and may be removed or
-  replaced in later releases.
+- **No Google apps.** Kiln does not include Google apps, which may not be redistributed. Apps that need Google Play
+  services can still be used: download a GApps package for Android 16 (arm64), we recommend [MindTheGapps](https://github.com/MindTheGapps) or [NikGApps](https://nikgapps.com) Core, and
+  install it with **Install Zip** (see below), ideally before the instance's first start. Kiln is tested with
+  both.
 - **Left out on purpose:** music player, recorder, calculator, clock, calendar, contacts, messaging, the setup wizard,
   always-on display, hotspot and tethering, and casting.
 
@@ -95,10 +95,14 @@ alphas, which used another Android image, cannot be updated in place: create a n
 | Long press (menus, text selection, moving icons) | Right click |
 | Volume | Toolbar **−** and **+**, like a phone's volume keys |
 | Install an app | Toolbar **Install APK**, then choose `.apk` / `.xapk` / `.apkm` / `.apks` files |
+| Install a flashable zip (for example a GApps package) | **Install Zip** in the launcher, with the instance stopped |
+| Open the recovery (factory reset, fastbootd) | **Recovery** in the launcher, with the instance stopped |
+| Use a GSI instead of Kiln's Android | The arrow next to **+** → **New Instance with a GSI…** |
 | Choose the storage size | Instance settings → **Storage**, before its first start |
 | Choose the SIM's country | Instance settings → **SIM** (or **None**); **New** draws another SIM |
 | Map keys for a game | Open the game, then toolbar **Key Mapping** (⌘K) |
-| Turn a game's mapping off and on, and free or hold the mouse | **⌃⌥** (Control+Option), or F10 |
+| Turn a game's mapping on and off, and hold or free the mouse | **⌃⌥** (Control+Option), or F10 (a game opens with it off) |
+| Use the mouse as a mouse in a game | Key Mapping → **Mouse as a mouse**, then **⌃⌥** |
 | Move a game's camera with the mouse | Key Mapping → **Mouse Area**, placed over the camera |
 | Mouse look (default mapping) | **`** (backtick) |
 | Full screen with only the game | The window's green button, or ⌃⌘F |
@@ -109,31 +113,43 @@ alphas, which used another Android image, cannot be updated in place: create a n
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.8.1-beta
+## What's new in 0.0.9-beta
 
-- **Better OpenGL ES graphics.** Many games on an OpenGL ES profile draw more correctly, and Genshin Impact plays
-  much longer before closing in our tests.
-- **More stable.** Fixes for rare freezes of the picture and for an instance that would not shut down.
-- **Lighter on your Mac.** Android's input and screen-rotation services no longer keep a processor busy while idle:
-  an idle instance now uses about 2% of Android's processors, and the emulator about a quarter less of your Mac.
-- **Turning the phone feels real to games.** Rotating the screen now turns the phone over about 0.4 s: the gyroscope
-  sees the turn and gravity swings round with it, instead of jumping.
-- **No printing service.** Android's print spooler and its Quick Settings tiles for battery saver, modes, device
-  controls, USB tethering and rotation are gone; Bluetooth tethering and the Safety & emergency page too.
-- Already on 0.0.7? Select the instance, stopped, and click **Update Android**. The first time a game opens after the
-  update it may prepare its graphics again once.
+- **Install Zip.** Install a flashable zip, such as a GApps package, in one click: Kiln starts the instance's recovery in
+  the background, installs the zip and starts Android again, with a progress bar. Zips that are not signed by Kiln
+  (most are not) are accepted.
+- **Recovery and GSI.** The launcher opens an instance's recovery in its own window (arrow keys and Enter), and a new
+  instance can run a GSI (Generic System Image) instead of Kiln's Android: the arrow next to **+**.
+- **No Google apps in the image.** Install them with **Install Zip** (see [About the Android image](#about-the-android-image)).
+- **The mouse as a mouse.** In Key Mapping, **Mouse as a mouse** gives a game Android's own mouse (cursor, right button,
+  wheel) instead of touches, for games and apps made for one. **⌃⌥** turns it on and off with the rest of the mapping.
+- **A game's mapping now opens off,** so the keyboard and mouse work as usual until you press **⌃⌥** (or F10). Right
+  after you save a mapping in the editor it is on.
+- **Sturdier graphics.** The graphics part now runs in a process of its own: if it ever fails, Android keeps running
+  and Kiln offers to shut the instance down cleanly instead of freezing.
+- **Updating an instance from 0.0.8 removes its Google apps,** since the new image has none. After **Update Android**,
+  use **Install Zip** with a GApps package for Android 16 (arm64), such as [MindTheGapps](https://github.com/MindTheGapps) or [NikGApps](https://nikgapps.com) Core, to bring them back; your apps,
+  data and accounts stay.
+- **adb and fastboot built from their open source code,** instead of Google's binaries.
+- **adb, more like a phone's.** An instance with adb on now accepts only your Mac's own adb key (no prompt for it, and
+  any other key is refused), and no longer looks like a debug device to apps.
+- **The bootloader reads as locked,** as on a phone from the shop (verified boot state "green" instead of "orange").
+- The first time a game opens after the update it may prepare its graphics again once.
 
-**About the next updates.** Graphics updates will come at a slower pace from now on, so that each one can be built on
-more of your reports. Please keep sending **Error Report** zips when a game closes or draws something wrong: they are
-what the next graphics update will be made from.
-
-**A personal note.** These last releases came out of a stretch of hyperfocus, with too little sleep and a lot of testing.
-I will use this slower pace to rest for a few days. Kiln is not going anywhere: reports keep being read, and work
-picks up again soon.
+**About the next updates.** Graphics updates keep coming at a slower pace, so that each one can be built on more of
+your reports. Please keep sending **Error Report** zips when a game closes or draws something wrong.
 
 **Kiln needs more test machines.** Today it is developed and tested on a single Mac. Donations go first to more Macs
 (older chips such as M1 and M2, and other macOS versions), so that problems are caught before a release instead of
 after it. If Kiln is useful to you, [supporting it on Ko-fi](https://ko-fi.com/nks1608) helps directly.
+
+## Also new in 0.0.8-beta
+
+- **Better OpenGL ES graphics.** Many games on an OpenGL ES profile draw more correctly, and Genshin Impact plays
+  much longer before closing in our tests.
+- **More stable.** Fixes for rare freezes of the picture and for an instance that would not shut down.
+- **Lighter on your Mac.** Android's input and screen-rotation services no longer keep a processor busy while idle.
+- **Turning the phone feels real to games:** the gyroscope sees the turn and gravity swings round with it.
 
 ## Also new in 0.0.7.1-beta
 
@@ -172,6 +188,8 @@ after it. If Kiln is useful to you, [supporting it on Ko-fi](https://ko-fi.com/n
 - **Google certification.** This is an emulator, so apps that require Play Integrity / device certification refuse to
   run, and games or apps that look for emulators can still tell. Signing in to a Google account has not been fully
   tested yet.
+- **A GSI shows its own device name** ("AOSP on ARM64"), not the phone chosen for the instance, and its adb cannot be
+  reached (an AOSP GSI asks for a key Kiln cannot give it): use **Shell** in the launcher instead.
 - **One Android version.** Android 16 only for now. More versions are planned.
 - **No microphone, camera, calls or mobile data** inside Android yet: the SIM registers on its network, and the internet
   comes from the Wi-Fi. Bluetooth is virtual and cannot pair with real devices.
@@ -214,8 +232,9 @@ coming soon, for reports, questions and news.
 
 Kiln (the launcher, the player and `kilnctl`) is proprietary software. It ships open-source components under their own
 licenses:
-- QEMU and Kiln's virtual devices, under GPL-2.0-or-later. Their complete source code is available on request under
-  the written offer in `OFFER.txt`, through the [GitHub issues](https://github.com/NKS1608/kiln-android-emulator/issues).
+- QEMU and Kiln's virtual devices, under GPL-2.0-or-later, and the Linux kernel modules of the Android image. Their
+  source code is in the [`source/`](source/) folder of this repository (with `BUILDING.txt`), and stays available on
+  request under the written offer in `OFFER.txt`.
 - Permissive components, listed in `THIRD-PARTY-NOTICES.txt`.
 
 The full licensing map is in `LICENSE.txt`.
@@ -223,12 +242,13 @@ The full licensing map is in `LICENSE.txt`.
 Android is a trademark of Google LLC. Google Play is a trademark of Google LLC. The Android robot is reproduced or
 modified from work created and shared by Google and used according to terms described in the Creative Commons 3.0
 Attribution License. Kiln is not affiliated with or endorsed by Google, the LineageOS project, the
-android-lineage-qemu project, MindTheGapps, any mobile operator or any device maker named here.
+android-lineage-qemu project, MindTheGapps, NikGApps, any mobile operator or any device maker named here.
 
 ## Files in the release
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.8.1-beta.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.9-beta.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
+| `source/` (in this repository) | The open-source code the release is built from |

@@ -1,0 +1,34 @@
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 219597c..a21d416 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2574,7 +2574,13 @@ static void virt_set_memmap(VirtMachineState *vms, int pa_bits)
+         error_report("maxmem/slots too huge");
+         exit(EXIT_FAILURE);
+     }
+-    if (base < vms->memmap[VIRT_MEM].base + LEGACY_RAMLIMIT_BYTES) {
++    /*
++     * Kiln: the 256GiB floor keeps the legacy layout, which only fits a 40-bit
++     * or larger PA space; below that (HVF on M1/M2: 36 bits) the high regions
++     * start right above RAM, or they would all be dropped, the 64-bit PCI
++     * window with them.
++     */
++    if (base < vms->memmap[VIRT_MEM].base + LEGACY_RAMLIMIT_BYTES && pa_bits >= 40) {
+         base = vms->memmap[VIRT_MEM].base + LEGACY_RAMLIMIT_BYTES;
+     }
+ 
+@@ -3391,11 +3397,9 @@ static void virt_set_highmem_mmio_size(Object *obj, Visitor *v,
+         return;
+     }
+ 
+-    if (size < DEFAULT_HIGH_PCIE_MMIO_SIZE) {
+-        char *sz = size_to_str(DEFAULT_HIGH_PCIE_MMIO_SIZE);
+-        error_setg(errp, "highmem-mmio-size cannot be set to a lower value "
+-                         "than the default (%s)", sz);
+-        g_free(sz);
++    /* Kiln: a smaller window fits a 36-bit PA space (M1/M2 under HVF) */
++    if (size < 4 * GiB) {
++        error_setg(errp, "highmem-mmio-size cannot be set below 4 GiB");
+         return;
+     }
+ 
