@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.9-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.9.1-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9-beta"><b>⬇ Download Kiln 0.0.9-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.1-beta"><b>⬇ Download Kiln 0.0.9.1-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -55,7 +55,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.9-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9-beta) and open it.
+1. Download **`Kiln-0.0.9.1-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.1-beta) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this beta is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -113,7 +113,30 @@ alphas, which used another Android image, cannot be updated in place: create a n
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.9-beta
+## What's new in 0.0.9.1-beta
+
+- **Smoother OpenGL ES games.** Games on an OpenGL ES profile stall much less when they load new shaders (the long
+  pauses of several seconds are gone in our tests) and run at higher frame rates. The CPUs of Android now stay on your
+  Mac's performance cores.
+- **Games keep their compiled shaders.** OpenGL ES games made with Unity could not save some of their shaders and
+  compiled them again every time they started, which slowed loading. They are now saved like the rest.
+- **Unreal Engine games draw correctly again** on an OpenGL ES profile (PUBG Mobile drew some objects wrong).
+- **Lighter on the Mac.** Each frame reaches the window with much less work, so the graphics take less of your Mac.
+- **Screen recording.** **View → Record Screen** (⇧⌘R) records Android's screen to your Movies folder.
+- **A fuller Error Report,** now also in the window's **Help** menu: a screenshot, five seconds of screen recording, the
+  app on screen and its log, the crashes Android kept, graphics errors, your Mac and Kiln versions, and the logs of the
+  previous start too.
+- **Device menu and a toolbar of your own.** Rotate, shake, volume and Install APK are in the new **Device** menu, so
+  the toolbar can be customized (right-click it): remove what you do not use, or add **Record Screen** and **Error
+  Report**.
+- **The battery remembers where it was.** Close the window and it comes back at the same level; left charging, it
+  comes back full and off the charger, as a phone would.
+- **Update Android never goes back to an older Android.**
+- **The Command key stays on the Mac.** It is no longer sent to Android (alone it acted as Home), so ⌘ shortcuts no
+  longer move Android.
+- Fixed: a false "graphics renderer stopped" warning when a window opened over an instance another Kiln version started.
+
+## Also new in 0.0.9-beta
 
 - **Install Zip.** Install a flashable zip, such as a GApps package, in one click: Kiln starts the instance's recovery in
   the background, installs the zip and starts Android again, with a progress bar. Zips that are not signed by Kiln
@@ -249,7 +272,7 @@ android-lineage-qemu project, MindTheGapps, NikGApps, any mobile operator or any
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.9-beta.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.9.1-beta.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | The open-source code the release is built from |

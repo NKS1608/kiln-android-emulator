@@ -1,0 +1,23 @@
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index d2276d8..49a85e4 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -48,6 +48,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include <pthread/qos.h>
+ #include "qemu/guest-random.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/queue.h"
+@@ -158,6 +159,10 @@ static void *hvf_cpu_thread_fn(void *arg)
+ 
+     assert(hvf_enabled());
+ 
++    /* Kiln: the guest's CPUs as user-interactive work, so macOS keeps them on the performance cores (at the default
++     * QoS they could run on the efficiency cores, and a game's own CPU work ran there). */
++    pthread_set_qos_class_self_np(QOS_CLASS_USER_INTERACTIVE, 0);
++
+     rcu_register_thread();
+ 
+     bql_lock();
