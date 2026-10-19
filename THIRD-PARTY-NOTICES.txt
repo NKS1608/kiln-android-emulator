@@ -25,6 +25,9 @@ Protocol Buffers (inside adb)                BSD-3-Clause              https://g
 Abseil (inside adb)                          Apache-2.0                https://abseil.io
 Brotli (inside adb)                          MIT                       https://github.com/google/brotli
 LZ4 library (inside adb)                     BSD-2-Clause              https://github.com/lz4/lz4
+KeyMint reference TA (inside kiln-keymint)   Apache-2.0                https://android.googlesource.com/platform/system/keymint
+OpenSSL 3.5 (inside kiln-keymint)            Apache-2.0                https://www.openssl.org
+RustCrypto aes, cmac (inside kiln-keymint)   MIT or Apache-2.0         https://github.com/RustCrypto
 {fmt} (inside adb, fastboot)                 MIT                       https://fmt.dev
 
 App icon: the Android robot is reproduced or modified from work created and shared by Google and used according to terms

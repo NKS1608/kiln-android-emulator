@@ -1,0 +1,1 @@
+obj-m += kiln_cpufreq.o

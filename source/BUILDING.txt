@@ -1,4 +1,4 @@
-Kiln open-source parts (kiln revision 3651458)
+Kiln open-source parts (kiln revision 112233a)
 
 QEMU: upstream v11.1.2 (https://gitlab.com/qemu-project/qemu) plus the files in qemu/. Apply them with
   scripts/apply-qemu.sh <qemu source dir>
@@ -11,5 +11,6 @@ Guest kernel: https://github.com/LineageOS/android_kernel_virt_virtio at revisio
 built by the Android tree with its own configuration, plus Kiln's modules and changes in kernel/:
   kernel/vaddress      the vaddress device's driver (Kbuild)
   kernel/v4l2loopback  the camera's video device
+  kernel/kiln_cpufreq  the posed phone's CPU frequencies (cpufreq from the device tree)
   kernel/virt_wifi     the change to Linux's virt_wifi driver
 Built with KBUILD_BUILD_USER=kiln KBUILD_BUILD_HOST=kiln.

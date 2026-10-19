@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.9.1-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.9.2-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.1-beta"><b>⬇ Download Kiln 0.0.9.1-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.2-beta"><b>⬇ Download Kiln 0.0.9.2-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -55,7 +55,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.9.1-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.1-beta) and open it.
+1. Download **`Kiln-0.0.9.2-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.2-beta) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this beta is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -113,7 +113,29 @@ alphas, which used another Android image, cannot be updated in place: create a n
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.9.1-beta
+## What's new in 0.0.9.2-beta
+
+- **GPS at a place you choose.** Give an instance a location (its settings, or `kilnctl set <name>
+  location=<latitude>,<longitude>`) and Android's GPS reports it, standing still. Without one there is no GPS fix, as
+  indoors.
+- **Mobile data.** With a SIM card, turning on **Mobile data** in Android connects through the operator's network (its
+  APN), and apps that check for a cellular connection see one. It starts off, as before.
+- **Microphone.** An instance can use your Mac's microphone (**Microphone** in its settings, off by default). It is open
+  only while an app in Android records; macOS asks for permission the first time.
+- **The phone's CPU.** Android now sees the chosen phone's big and little cores and their clock speeds (for example the
+  Galaxy A53's 2.0 and 2.4 GHz cores), shared out over the instance's CPUs. Your Mac's cores are all used as before;
+  only what Android is told changes. Please tell us if a game runs slower than in 0.0.9.1.
+- **A TEE for new instances.** Their keystore runs outside Android, on your Mac, with keys of their own kept in the
+  instance: apps see hardware-backed keys (Trusted Environment) instead of software ones. Instances made before keep their
+  keys as they are.
+- **Thermal readings.** Android reports a cool phone, so games that ask about heat do not hold themselves back.
+- **Update Android keeps Google apps.** A zip installed with **Install Zip** that is made to survive updates (Google
+  apps) is installed again after **Update Android**.
+- **Video in the camera app.** Switching the camera app to video no longer closes it, so videos can be recorded as well
+  as photos.
+- **Unreal Engine games draw correctly** on OpenGL ES (PUBG Mobile's trees were drawn as large flat planes).
+
+## Also new in 0.0.9.1-beta
 
 - **Smoother OpenGL ES games.** Games on an OpenGL ES profile stall much less when they load new shaders (the long
   pauses of several seconds are gone in our tests) and run at higher frame rates. The CPUs of Android now stay on your
@@ -215,8 +237,8 @@ after it. If Kiln is useful to you, [supporting it on Ko-fi](https://ko-fi.com/n
 - **A GSI shows its own device name** ("AOSP on ARM64"), not the phone chosen for the instance, and its adb cannot be
   reached (an AOSP GSI asks for a key Kiln cannot give it): use **Shell** in the launcher instead.
 - **One Android version.** Android 16 only for now. More versions are planned.
-- **No microphone, camera, calls or mobile data** inside Android yet: the SIM registers on its network, and the internet
-  comes from the Wi-Fi. Bluetooth is virtual and cannot pair with real devices.
+- **No calls or SMS** inside Android yet. Bluetooth is virtual and cannot pair with real devices.
+- **The TEE is for new instances only,** and the lock screen's PIN or password is still checked inside Android.
 - **Some games may still show rendering glitches.** Please report the game, its graphics profile (Adreno 740, 650 or
   Mali-G68) and a screenshot.
 - **M1 and M2 Macs are still untested.** 0.0.4 sized the graphics memory window to fit them, but nobody has reported
@@ -272,7 +294,7 @@ android-lineage-qemu project, MindTheGapps, NikGApps, any mobile operator or any
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.9.1-beta.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.9.2-beta.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | The open-source code the release is built from |

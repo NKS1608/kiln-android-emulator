@@ -1,0 +1,109 @@
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -633,7 +633,53 @@
+ 
+     return false;
+ }
++
++/*
++ * Kiln: a phone's CPU layout in the device tree. "kiln-cpus" lists the clusters as <cores>:<capacity-dmips-mhz>:<max kHz>,
++ * joined by '/', little first (e.g. 6:400:2000000/2:1024:2400000); their cores add up to -smp. The vCPUs are alike, but the
++ * guest learns the clusters from cpu-map, their relative speed from capacity-dmips-mhz (as on a phone, its scheduler puts
++ * heavy work on the big ones), and its kiln-cpufreq driver publishes "kiln,max-freq-khz" as each core's frequency.
++ */
++static void kiln_fdt_cpu_layout(VirtMachineState *vms)
++{
++    MachineState *ms = MACHINE(vms);
++    unsigned int cores[16], capacity[16], khz[16], n = 0, total = 0, cpu = 0;
+ 
++    if (!vms->kiln_cpus || !*vms->kiln_cpus) {
++        return;
++    }
++    g_auto(GStrv) clusters = g_strsplit(vms->kiln_cpus, "/", 0);
++    for (; clusters[n]; n++) {
++        if (n == ARRAY_SIZE(cores) ||
++            sscanf(clusters[n], "%u:%u:%u", &cores[n], &capacity[n], &khz[n]) != 3 ||
++            !cores[n] || !capacity[n] || !khz[n]) {
++            error_setg(&error_fatal, "kiln-cpus: bad cluster '%s' (<cores>:<capacity>:<kHz>)",
++                       clusters[n] ? clusters[n] : "");
++            return;
++        }
++        total += cores[n];
++    }
++    if (total != ms->smp.cpus) {
++        error_setg(&error_fatal, "kiln-cpus: %u cores, but -smp has %u", total, ms->smp.cpus);
++        return;
++    }
++    qemu_fdt_nop_node(ms->fdt, "/cpus/cpu-map");  /* the generic one: every vCPU in one cluster */
++    qemu_fdt_add_subnode(ms->fdt, "/cpus/cpu-map");
++    qemu_fdt_add_subnode(ms->fdt, "/cpus/cpu-map/socket0");
++    for (unsigned int c = 0; c < n; c++) {
++        g_autofree char *cluster = g_strdup_printf("/cpus/cpu-map/socket0/cluster%u", c);
++        qemu_fdt_add_subnode(ms->fdt, cluster);
++        for (unsigned int i = 0; i < cores[c]; i++, cpu++) {
++            g_autofree char *core = g_strdup_printf("%s/core%u", cluster, i);
++            g_autofree char *node = g_strdup_printf("/cpus/cpu@%u", cpu);
++            qemu_fdt_add_subnode(ms->fdt, core);
++            qemu_fdt_setprop_cell(ms->fdt, core, "cpu", vms->cpu_phandles[cpu]);
++            qemu_fdt_setprop_cell(ms->fdt, node, "capacity-dmips-mhz", capacity[c]);
++            qemu_fdt_setprop_cell(ms->fdt, node, "kiln,max-freq-khz", khz[c]);
++        }
++    }
++}
++
+ static void fdt_add_cpu_nodes(VirtMachineState *vms)
+ {
+     int cpu;
+@@ -3153,6 +3199,7 @@
+ 
+     fdt_add_timer_nodes(vms);
+     fdt_add_cpu_nodes(vms);
++    kiln_fdt_cpu_layout(vms);
+ 
+     memory_region_add_subregion(sysmem, vms->memmap[VIRT_MEM].base,
+                                 machine->ram);
+@@ -3404,8 +3451,21 @@
+     }
+ 
+     extended_memmap[VIRT_HIGH_PCIE_MMIO].size = size;
++}
++
++static char *virt_get_kiln_cpus(Object *obj, Error **errp)
++{
++    return g_strdup(VIRT_MACHINE(obj)->kiln_cpus ? VIRT_MACHINE(obj)->kiln_cpus : "");
+ }
+ 
++static void virt_set_kiln_cpus(Object *obj, const char *value, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    g_free(vms->kiln_cpus);
++    vms->kiln_cpus = g_strdup(value);
++}
++
+ static char *virt_get_msi(Object *obj, Error **errp)
+ {
+     VirtMachineState *vms = VIRT_MACHINE(obj);
+@@ -4286,6 +4346,11 @@
+                                           "Set GIC version. "
+                                           "Valid values are 2, 3, 4, x-5, host and max");
+ 
++    object_class_property_add_str(oc, "kiln-cpus", virt_get_kiln_cpus, virt_set_kiln_cpus);
++    object_class_property_set_description(oc, "kiln-cpus",
++                                          "Kiln: CPU clusters as <cores>:<capacity-dmips-mhz>:<max kHz>, "
++                                          "joined by '/', little first");
++
+     object_class_property_add_str(oc, "iommu", virt_get_iommu, virt_set_iommu);
+     object_class_property_set_description(oc, "iommu",
+                                           "Set the IOMMU type. "
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -161,6 +161,8 @@
+ 
+ struct VirtMachineState {
+     MachineState parent;
++    /* Kiln: a phone's CPU clusters for the device tree (kiln_fdt_cpu_layout in virt.c), or NULL */
++    char *kiln_cpus;
+     Notifier machine_done;
+     DeviceState *platform_bus_dev;
+     FWCfgState *fw_cfg;
