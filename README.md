@@ -7,14 +7,14 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.9.3-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.1.0</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.3-beta"><b>⬇ Download Kiln 0.0.9.3-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.0"><b>⬇ Download Kiln 0.1.0</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
-> **This is a beta.** It runs Android 16 well enough for daily use and real games: some rough edges remain, so please
-> tell us what breaks (see [Reporting a problem](#reporting-a-problem)).
+> **Kiln 0.1.0 is the first stable release.** It runs Android 16 for daily use and real games. Please tell us what
+> breaks (see [Reporting a problem](#reporting-a-problem)).
 > Enjoying it? [Support Kiln on Ko-fi](https://ko-fi.com/nks1608).
 
 <p align="center">
@@ -55,9 +55,9 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.9.3-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.3-beta) and open it.
+1. Download **`Kiln-0.1.0.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.0) and open it.
 2. Drag **Kiln** to **Applications**.
-3. The first time only: this beta is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
+3. The first time only: Kiln is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
 4. Click **+** to create an instance, then **Start**.
 
@@ -113,7 +113,26 @@ alphas, which used another Android image, cannot be updated in place: create a n
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.9.3-beta
+## What's new in 0.1.0
+
+- **The first stable release.**
+- **Much smoother OpenGL ES games.** Android now takes the compressed textures most Android games ship, as a phone's
+  GPU does, and the Mac's GPU draws them directly. Before, games unpacked those textures on Android's CPU in the middle
+  of a frame. In our tests Genshin Impact in the busy city of Liyue went from 48 to 59 fps, the stutters are almost
+  gone, and it loads much faster.
+- **The screen's refresh rate follows what is on it,** like a phone with an adaptive display. A game at 60 fps gets a
+  60 Hz screen on a 120 Hz instance instead of having to keep up with every other refresh, and a still screen drops to
+  10 Hz until you touch it or something moves, which saves your Mac work. The instance's refresh rate is now the
+  highest it goes.
+- **Games that save their compiled shaders start faster:** saved shaders are prepared only when the game uses them.
+- **Instances stay in the Dock while Android runs.** Close a window with **Keep Running** and the instance keeps its Dock
+  icon: click it to bring the window back. The icon goes when Android shuts down. The launcher's window also comes back
+  from the Dock after you close it.
+- **A one-time note about supporting Kiln.** After two hours of use, Kiln asks once whether you would like to support
+  it, with **Remind Me Later** (five hours on) and **Don't Show Again**. Nothing else changes either way.
+- **A new Android build:** instances show **Update** in the launcher. Their apps and data stay.
+
+## Also new in 0.0.9.3-beta
 
 - **Games run at full speed again.** 0.0.9.2 told Android how the chosen phone's CPU cores differ in speed, and Android
   then crowded games' heavy work onto the one "fast" core, while your Mac's cores are all alike: games such as Genshin
@@ -239,7 +258,7 @@ after it. If Kiln is useful to you, [supporting it on Ko-fi](https://ko-fi.com/n
 
 ## Known limitations
 
-- **Beta quality.** Some things may still break. Back up anything you care about inside an instance.
+- **Back up anything you care about** inside an instance: some things may still break.
 - **macOS 14 to 26 are untested for full sessions.** The app and its runtime start on macOS 14; a complete Android session
   has been run on macOS 27 only. Reports from older systems are very welcome.
 - **Not notarized.** macOS asks for confirmation the first time (see [Install](#install)).
@@ -255,8 +274,8 @@ after it. If Kiln is useful to you, [supporting it on Ko-fi](https://ko-fi.com/n
   Mali-G68) and a screenshot.
 - **M1 and M2 Macs are still untested.** 0.0.4 sized the graphics memory window to fit them, but nobody has reported
   back yet: if you have an M1 or M2 Mac, please tell us whether Kiln starts.
-- **OpenGL ES games can still dip below 60 fps** in heavy scenes, and Genshin Impact's in-game menu is slow on an
-  OpenGL ES profile. Vulkan profiles (such as Adreno 740) are usually smoother.
+- **OpenGL ES games can still dip below 60 fps** in the heaviest scenes, and Genshin Impact's in-game menu may be slow
+  on an OpenGL ES profile. Vulkan profiles (such as Adreno 740) are usually smoother.
 - **Genshin Impact on an OpenGL ES profile can still close** after a long session, most often on the first launch after
   an update. Please report how long it plays for you. Vulkan profiles (such as Adreno 740) are not affected.
 - **Storage is set once.** Choose it before the instance's first start.
@@ -306,7 +325,7 @@ android-lineage-qemu project, MindTheGapps, NikGApps, any mobile operator or any
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.9.3-beta.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.1.0.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | The open-source code the release is built from |
