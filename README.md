@@ -7,9 +7,9 @@
 <p align="center"><b>Android, fired up natively on your Mac.</b><br>
 An Android emulator built for Apple Silicon: hardware virtualization, real GPU acceleration, and controls made for games.</p>
 
-<p align="center"><code>0.0.9.2-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.0.9.3-beta</code> · macOS 14+ · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.2-beta"><b>⬇ Download Kiln 0.0.9.2-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.3-beta"><b>⬇ Download Kiln 0.0.9.3-beta</b></a> · <a href="https://ko-fi.com/nks1608">☕ Support Kiln</a></p>
 
 ---
 
@@ -55,7 +55,7 @@ An Android emulator built for Apple Silicon: hardware virtualization, real GPU a
 
 ## Install
 
-1. Download **`Kiln-0.0.9.2-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.2-beta) and open it.
+1. Download **`Kiln-0.0.9.3-beta.dmg`** from [Releases](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.0.9.3-beta) and open it.
 2. Drag **Kiln** to **Applications**.
 3. The first time only: this beta is not notarized yet, so **right-click Kiln → Open**, then confirm. You can also use
    *System Settings → Privacy & Security → Open Anyway*.
@@ -113,7 +113,19 @@ alphas, which used another Android image, cannot be updated in place: create a n
 Power users get the same through `kilnctl`, the command-line tool inside the app:
 `/Applications/Kiln.app/Contents/Helpers/kilnctl` (run it alone for the list of commands).
 
-## What's new in 0.0.9.2-beta
+## What's new in 0.0.9.3-beta
+
+- **Games run at full speed again.** 0.0.9.2 told Android how the chosen phone's CPU cores differ in speed, and Android
+  then crowded games' heavy work onto the one "fast" core, while your Mac's cores are all alike: games such as Genshin
+  Impact lost frames. Android now sees every core as equally fast again. The phone's clusters and clock speeds are still
+  shown to apps.
+- **Smoother OpenGL ES games.** Android waits less for the Mac while a game draws, and handles the memory games ask for
+  on every frame far more cheaply inside the emulator. In our tests Genshin Impact's busy scenes went from 25-45 fps to
+  48-60, with much shorter stutters.
+- **A new Android build:** instances show **Update** in the launcher. Their apps and data stay, and Google apps installed
+  with **Install Zip** in 0.0.9.2 are installed again.
+
+## Also new in 0.0.9.2-beta
 
 - **GPS at a place you choose.** Give an instance a location (its settings, or `kilnctl set <name>
   location=<latitude>,<longitude>`) and Android's GPS reports it, standing still. Without one there is no GPS fix, as
@@ -122,9 +134,9 @@ Power users get the same through `kilnctl`, the command-line tool inside the app
   APN), and apps that check for a cellular connection see one. It starts off, as before.
 - **Microphone.** An instance can use your Mac's microphone (**Microphone** in its settings, off by default). It is open
   only while an app in Android records; macOS asks for permission the first time.
-- **The phone's CPU.** Android now sees the chosen phone's big and little cores and their clock speeds (for example the
+- **The phone's CPU.** Android now sees the chosen phone's CPU clusters and their clock speeds (for example the
   Galaxy A53's 2.0 and 2.4 GHz cores), shared out over the instance's CPUs. Your Mac's cores are all used as before;
-  only what Android is told changes. Please tell us if a game runs slower than in 0.0.9.1.
+  only what Android is told changes.
 - **A TEE for new instances.** Their keystore runs outside Android, on your Mac, with keys of their own kept in the
   instance: apps see hardware-backed keys (Trusted Environment) instead of software ones. Instances made before keep their
   keys as they are.
@@ -294,7 +306,7 @@ android-lineage-qemu project, MindTheGapps, NikGApps, any mobile operator or any
 
 | File | What |
 | --- | --- |
-| `Kiln-0.0.9.2-beta.dmg` | The app, with the Android 16 image inside |
+| `Kiln-0.0.9.3-beta.dmg` | The app, with the Android 16 image inside |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | The open-source code the release is built from |

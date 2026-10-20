@@ -1,4 +1,4 @@
-Kiln open-source parts (kiln revision 112233a)
+Kiln open-source parts (kiln revision 23bc51b)
 
 QEMU: upstream v11.1.2 (https://gitlab.com/qemu-project/qemu) plus the files in qemu/. Apply them with
   scripts/apply-qemu.sh <qemu source dir>
