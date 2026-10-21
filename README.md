@@ -6,9 +6,9 @@
 
 <p align="center">An Android emulator for Macs with Apple Silicon, made for apps and games.</p>
 
-<p align="center"><code>0.1.2</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.1.3</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.2"><b>Download Kiln 0.1.2</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.3"><b>Download Kiln 0.1.3</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
 
 ---
 
@@ -71,7 +71,7 @@ keyboard, the mouse or a game controller.
 
 ## Install
 
-1. Download `Kiln-0.1.2.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.2)
+1. Download `Kiln-0.1.3.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.3)
    and open it.
 2. Drag **Kiln** to **Applications**.
 3. Kiln is not notarized by Apple yet, so macOS asks for confirmation the first time. Right-click Kiln, choose
@@ -137,18 +137,12 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 
 `kilnctl` is at `/Applications/Kiln.app/Contents/Helpers/kilnctl`. Run it without arguments to see its commands.
 
-## What's new in 0.1.2
+## What's new in 0.1.3
 
-- **A new look.** The launcher shows each instance with its phone, status and a Start button at the top; settings that
-  wait for the next start say so while Android runs. Phone models are chosen from a grid, and the whole app uses Kiln's
-  green.
-- **A toolbar that fits.** In a phone held upright, the window keeps Back, Home and Recents, Rotate, Key Mapping and Install
-  APK, with the instance's name between them, and the rest under **More**. A window opens large enough to use, also when
-  it was left small.
-- **Screenshot** in the toolbar saves the screen to the Desktop.
-- **Anti-aliasing in games.** Games that use it, such as PUBG Mobile at HD quality, draw their foliage and edges
-  correctly.
-- A new Android build. Instances show **Update** in the launcher, and their apps and data are kept.
+- **Supercell games' login and menus.** In Clash Royale and other Supercell games, the Supercell ID login showed an empty
+  panel and the game drew its arena without its buttons, text and cards. They now show. Other apps whose screens are
+  drawn the same way are fixed too.
+- The Android system is the same as in 0.1.2: instances need no update.
 
 More mapping options are coming in the next releases: repeated taps, MOBA skills, zoom and scroll, and game
 controllers mapped to touches for games without controller support.
@@ -211,7 +205,7 @@ any mobile operator or any device maker named here.
 
 | File | Contents |
 | --- | --- |
-| `Kiln-0.1.2.dmg` | The app, including the Android 16 image |
+| `Kiln-0.1.3.dmg` | The app, including the Android 16 image |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | Source code of the open-source components |
