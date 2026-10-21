@@ -6,9 +6,9 @@
 
 <p align="center">An Android emulator for Macs with Apple Silicon, made for apps and games.</p>
 
-<p align="center"><code>0.1.0</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.1.1</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.0"><b>Download Kiln 0.1.0</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.1"><b>Download Kiln 0.1.1</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
 
 ---
 
@@ -36,8 +36,15 @@ keyboard, the mouse or a game controller.
   such as ⇧Q or ⌃1 work, and several keys can be held at once. Kiln switches to a game's mapping when that game comes
   to the front.
 - Camera control with the mouse, for games where you look around by dragging a thumb on the screen.
+- Gyroscope aiming: in games that aim by tilting the phone, moving the mouse turns it. You can choose a key or mouse
+  button to hold while aiming, and keep the mouse camera for the rest of the time.
+- A key of your choice frees the mouse pointer while a mapping is on, to click the game's menus. Hold ⌥ (or another
+  modifier) to free it only while held.
+- Share a game's mapping as a file with **Export…** and **Import…** in the mapping editor.
 - A mouse and keyboard mode for games that support them directly, such as Minecraft.
 - Game controllers connected to your Mac appear in Android as a standard gamepad.
+- More mapping options are on the way, including repeated taps, MOBA skills, zoom and scroll, and controllers mapped
+  to touches.
 - Refresh rates up to 180 Hz. The screen's rate follows what is shown, as on phones with adaptive displays: a still
   screen slows down and a game gets the rate it runs at.
 
@@ -47,6 +54,8 @@ keyboard, the mouse or a game controller.
   Android reports the chosen phone's model and system details to apps.
 - Each instance has its own SIM card (39 operators in 15 countries, or none), phone number, IMEI, serial number and
   Wi-Fi network. Its battery charges and drains like a real one.
+- GPS at a place you choose, or along a route you import in the player (a GPX file or a list of coordinates), on
+  foot, by bicycle, by car or at the times recorded in the file.
 - Choose which GPU games see (Adreno 740, Adreno 650 or Mali-G68), and set CPU and memory with the Low, Medium or High
   preset.
 - Each instance has its own window and Dock icon color. Closing the window can leave Android running: the instance
@@ -61,7 +70,7 @@ keyboard, the mouse or a game controller.
 
 ## Install
 
-1. Download `Kiln-0.1.0.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.0)
+1. Download `Kiln-0.1.1.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.1)
    and open it.
 2. Drag **Kiln** to **Applications**.
 3. Kiln is not notarized by Apple yet, so macOS asks for confirmation the first time. Right-click Kiln, choose
@@ -114,6 +123,11 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 | Turn a game's mapping on or off | ⌃⌥ (Control+Option) or F10. A game opens with its mapping off |
 | Use mouse and keyboard as on a PC | Key Mapping > **Mouse and keyboard mode**, then ⌃⌥ |
 | Control a game's camera with the mouse | Key Mapping > **Mouse Area**, placed over the camera |
+| Aim by tilting, in games that support it | Key Mapping > **Gyroscope**, then ⌃⌥ |
+| Free the mouse pointer while mapping | Set a key under **Free pointer** in Key Mapping |
+| Share a mapping | Key Mapping > **Export…** or **Import…** |
+| Follow a GPS route | **Location** > **Import Coordinates…** in the player, with GPS location on |
+| Keep an instance in another folder | **Move…** in the launcher |
 | Mouse look (default mapping) | ` (backtick) |
 | Full screen | The window's green button, or ⌃⌘F |
 | Rotate the screen | **Rotate** in the toolbar (⌘R) |
@@ -122,20 +136,29 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 
 `kilnctl` is at `/Applications/Kiln.app/Contents/Helpers/kilnctl`. Run it without arguments to see its commands.
 
-## What's new in 0.1.0
+## What's new in 0.1.1
 
-This is Kiln's first stable release.
-
-- OpenGL ES games run more smoothly and load faster. In our tests, Genshin Impact in the city of Liyue went from
-  48 to 59 fps, with almost no stutter.
-- The screen's refresh rate follows what is shown. A still screen drops to 10 Hz until you touch it or something
-  moves, and a game at 60 fps gets a 60 Hz screen. The rate set for the instance is now its maximum.
-- Games that keep their compiled shaders start faster.
-- With **Keep Running**, a closed instance stays in the Dock, and clicking it brings the window back. The launcher's
-  window also reopens from the Dock.
-- After two hours of use, Kiln asks once whether you would like to support the project. You can choose **Remind Me
-  Later** or **Don't Show Again**.
+- **Gyroscope aiming.** Add **Gyroscope** to a game's mapping and the mouse turns the phone, for games that aim by
+  tilting it. Sensitivity is adjustable and either axis can be inverted. Gravity and the compass turn with it, so the game sees a
+  phone that really moves, in portrait and in landscape.
+- **Aim while holding** (optional): the gyroscope works only while a key or mouse button is held, and the mouse camera
+  can stay in the same mapping.
+- **Free pointer** (optional): a key that lets go of the mouse pointer while a mapping is on, so you can click the
+  game's menus. A modifier such as ⌥ frees it while held, as Alt does in games on a PC.
+- **Sharing mappings:** **Export…** saves a game's mapping as a `.kilnkeys` file, and **Import…** opens one in the
+  editor to review before saving.
+- **GPS routes:** **Location** > **Import Coordinates…** in the player takes a GPX file or a text file with one
+  `latitude, longitude` per line (with optional seconds to stay). The GPS goes through the places at walking,
+  bicycle, car or highway speed, or at the file's own times; apps also get the speed and direction. Pause, repeat and
+  stop are in the same menu.
+- **Move…** in the launcher keeps an instance in another folder or disk. For safety, Kiln opens only its own
+  instances: an instance folder copied in from elsewhere is refused.
+- Security fixes in the graphics renderer.
+- The player's toolbar no longer stays hidden after a window was closed in full screen.
 - A new Android build. Instances show **Update** in the launcher, and their apps and data are kept.
+
+More mapping options are coming in the next releases: repeated taps, MOBA skills, zoom and scroll, and game
+controllers mapped to touches for games without controller support.
 
 ## Known limitations
 
@@ -195,7 +218,7 @@ any mobile operator or any device maker named here.
 
 | File | Contents |
 | --- | --- |
-| `Kiln-0.1.0.dmg` | The app, including the Android 16 image |
+| `Kiln-0.1.1.dmg` | The app, including the Android 16 image |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | Source code of the open-source components |
