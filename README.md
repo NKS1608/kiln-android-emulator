@@ -6,9 +6,9 @@
 
 <p align="center">An Android emulator for Macs with Apple Silicon, made for apps and games.</p>
 
-<p align="center"><code>0.1.1</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.1.2</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.1"><b>Download Kiln 0.1.1</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.2"><b>Download Kiln 0.1.2</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
 
 ---
 
@@ -45,6 +45,7 @@ keyboard, the mouse or a game controller.
 - Game controllers connected to your Mac appear in Android as a standard gamepad.
 - More mapping options are on the way, including repeated taps, MOBA skills, zoom and scroll, and controllers mapped
   to touches.
+- Anti-aliasing in games, as on a phone: games such as PUBG Mobile at HD quality draw it correctly.
 - Refresh rates up to 180 Hz. The screen's rate follows what is shown, as on phones with adaptive displays: a still
   screen slows down and a game gets the rate it runs at.
 
@@ -70,7 +71,7 @@ keyboard, the mouse or a game controller.
 
 ## Install
 
-1. Download `Kiln-0.1.1.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.1)
+1. Download `Kiln-0.1.2.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.2)
    and open it.
 2. Drag **Kiln** to **Applications**.
 3. Kiln is not notarized by Apple yet, so macOS asks for confirmation the first time. Right-click Kiln, choose
@@ -136,25 +137,17 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 
 `kilnctl` is at `/Applications/Kiln.app/Contents/Helpers/kilnctl`. Run it without arguments to see its commands.
 
-## What's new in 0.1.1
+## What's new in 0.1.2
 
-- **Gyroscope aiming.** Add **Gyroscope** to a game's mapping and the mouse turns the phone, for games that aim by
-  tilting it. Sensitivity is adjustable and either axis can be inverted. Gravity and the compass turn with it, so the game sees a
-  phone that really moves, in portrait and in landscape.
-- **Aim while holding** (optional): the gyroscope works only while a key or mouse button is held, and the mouse camera
-  can stay in the same mapping.
-- **Free pointer** (optional): a key that lets go of the mouse pointer while a mapping is on, so you can click the
-  game's menus. A modifier such as ⌥ frees it while held, as Alt does in games on a PC.
-- **Sharing mappings:** **Export…** saves a game's mapping as a `.kilnkeys` file, and **Import…** opens one in the
-  editor to review before saving.
-- **GPS routes:** **Location** > **Import Coordinates…** in the player takes a GPX file or a text file with one
-  `latitude, longitude` per line (with optional seconds to stay). The GPS goes through the places at walking,
-  bicycle, car or highway speed, or at the file's own times; apps also get the speed and direction. Pause, repeat and
-  stop are in the same menu.
-- **Move…** in the launcher keeps an instance in another folder or disk. For safety, Kiln opens only its own
-  instances: an instance folder copied in from elsewhere is refused.
-- Security fixes in the graphics renderer.
-- The player's toolbar no longer stays hidden after a window was closed in full screen.
+- **A new look.** The launcher shows each instance with its phone, status and a Start button at the top; settings that
+  wait for the next start say so while Android runs. Phone models are chosen from a grid, and the whole app uses Kiln's
+  green.
+- **A toolbar that fits.** In a phone held upright, the window keeps Back, Home and Recents, Rotate, Key Mapping and Install
+  APK, with the instance's name between them, and the rest under **More**. A window opens large enough to use, also when
+  it was left small.
+- **Screenshot** in the toolbar saves the screen to the Desktop.
+- **Anti-aliasing in games.** Games that use it, such as PUBG Mobile at HD quality, draw their foliage and edges
+  correctly.
 - A new Android build. Instances show **Update** in the launcher, and their apps and data are kept.
 
 More mapping options are coming in the next releases: repeated taps, MOBA skills, zoom and scroll, and game
@@ -218,7 +211,7 @@ any mobile operator or any device maker named here.
 
 | File | Contents |
 | --- | --- |
-| `Kiln-0.1.1.dmg` | The app, including the Android 16 image |
+| `Kiln-0.1.2.dmg` | The app, including the Android 16 image |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | Source code of the open-source components |
