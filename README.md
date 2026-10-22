@@ -6,9 +6,9 @@
 
 <p align="center">An Android emulator for Macs with Apple Silicon, made for apps and games.</p>
 
-<p align="center"><code>0.1.3</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.2.0</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.3"><b>Download Kiln 0.1.3</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.0"><b>Download Kiln 0.2.0</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
 
 ---
 
@@ -27,7 +27,13 @@ keyboard, the mouse or a game controller.
 - Android 16, built by the Kiln project and included in the app. A new instance starts in about half a minute and
   opens directly on the home screen.
 - Apps and games get OpenGL ES 3.1 and Vulkan, drawn by your Mac's GPU.
-- Install `.apk`, `.xapk`, `.apkm` and `.apks` files from the toolbar. Split APKs are combined for you.
+- Install `.apk`, `.xapk`, `.apkm` and `.apks` files from the toolbar, or drop them on the window. Split APKs are
+  combined for you.
+- Android's Download, Documents, Movies, DCIM and Music folders are kept on your Mac, inside the instance: a photo
+  taken in Android is in Finder at once (**Android Folders** in the toolbar), and a file you put there is in Android.
+  Other files dropped on the window go to Download.
+- Root with Magisk, for each instance that needs it (Device > **Root with Magisk** in the player). Kiln downloads
+  Magisk from its author's page when you turn it on.
 - Google apps are not included, but can be added with **Install Zip** (see [About the Android image](#about-the-android-image)).
 
 ### Games
@@ -40,11 +46,14 @@ keyboard, the mouse or a game controller.
   button to hold while aiming, and keep the mouse camera for the rest of the time.
 - A key of your choice frees the mouse pointer while a mapping is on, to click the game's menus. Hold ⌥ (or another
   modifier) to free it only while held.
+- Repeated taps: hold a key and the screen is tapped again and again, up to 30 times a second.
+- MOBA skills: hold a key, aim with the mouse from your hero, and let go to cast.
+- Zoom and scroll at a point you choose, with the mouse wheel, also while the mouse controls the camera.
+- Key hints over the game show which key does what, with an opacity you choose (View > Key Hints).
 - Share a game's mapping as a file with **Export…** and **Import…** in the mapping editor.
 - A mouse and keyboard mode for games that support them directly, such as Minecraft.
 - Game controllers connected to your Mac appear in Android as a standard gamepad.
-- More mapping options are on the way, including repeated taps, MOBA skills, zoom and scroll, and controllers mapped
-  to touches.
+- Controllers mapped to touches, for games without controller support, are on the way.
 - Anti-aliasing in games, as on a phone: games such as PUBG Mobile at HD quality draw it correctly.
 - Refresh rates up to 180 Hz. The screen's rate follows what is shown, as on phones with adaptive displays: a still
   screen slows down and a game gets the rate it runs at.
@@ -54,7 +63,9 @@ keyboard, the mouse or a game controller.
 - Choose from 16 phone models, including the Samsung Galaxy S24 Ultra, Pixel 9 Pro, OnePlus 12 and ROG Phone 8.
   Android reports the chosen phone's model and system details to apps.
 - Each instance has its own SIM card (39 operators in 15 countries, or none), phone number, IMEI, serial number and
-  Wi-Fi network. Its battery charges and drains like a real one.
+  Wi-Fi network, and you can change the operator, the number and the IMEI. Its battery charges and drains like a real
+  one.
+- Receive SMS from a number or a name (Device > **Receive SMS…** in the player), for sign-up codes and tests.
 - GPS at a place you choose, or along a route you import in the player (a GPX file or a list of coordinates), on
   foot, by bicycle, by car or at the times recorded in the file.
 - Choose which GPU games see (Adreno 740, Adreno 650 or Mali-G68), and set CPU and memory with the Low, Medium or High
@@ -71,7 +82,7 @@ keyboard, the mouse or a game controller.
 
 ## Install
 
-1. Download `Kiln-0.1.3.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.1.3)
+1. Download `Kiln-0.2.0.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.0)
    and open it.
 2. Drag **Kiln** to **Applications**.
 3. Kiln is not notarized by Apple yet, so macOS asks for confirmation the first time. Right-click Kiln, choose
@@ -79,7 +90,7 @@ keyboard, the mouse or a game controller.
 4. In the launcher, click **+** to create an instance, then **Start**.
 
 A new instance uses about 3 GB on your Mac and grows as you install apps. The storage size you choose is what Android
-reports; your Mac only stores what is actually written. With the Low preset, plan on 4 GB of memory for each running
+reports; your Mac only stores what is actually written, and space Android frees is returned to your Mac. With the Low preset, plan on 4 GB of memory for each running
 instance.
 
 ### Updating from an earlier version
@@ -114,7 +125,11 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 | Back, Home, Recents | Toolbar buttons. Middle click is Home |
 | Long press | Right click |
 | Volume | **−** and **+** in the toolbar |
-| Install an app | **Install APK** in the toolbar |
+| Install an app | **Install APK** in the toolbar, or drop it on the window |
+| Copy a file into Android | Drop it on the window: it goes to Download |
+| Open Android's folders on the Mac | **Android Folders** in the player's toolbar or the launcher |
+| Root with Magisk | Device > **Root with Magisk** in the player |
+| Receive an SMS | Device > **Receive SMS…** in the player |
 | Install a flashable zip, such as GApps | **Install Zip** in the launcher, with the instance stopped |
 | Open the recovery | **Recovery** in the launcher, with the instance stopped |
 | Run a GSI instead of Kiln's Android | The arrow next to **+**, then **New Instance with a GSI…** |
@@ -127,6 +142,7 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 | Aim by tilting, in games that support it | Key Mapping > **Gyroscope**, then ⌃⌥ |
 | Free the mouse pointer while mapping | Set a key under **Free pointer** in Key Mapping |
 | Share a mapping | Key Mapping > **Export…** or **Import…** |
+| Show the mapped keys on the game | View > **Key Hints** |
 | Follow a GPS route | **Location** > **Import Coordinates…** in the player, with GPS location on |
 | Keep an instance in another folder | **Move…** in the launcher |
 | Mouse look (default mapping) | ` (backtick) |
@@ -137,15 +153,17 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 
 `kilnctl` is at `/Applications/Kiln.app/Contents/Helpers/kilnctl`. Run it without arguments to see its commands.
 
-## What's new in 0.1.3
+## What's new in 0.2.0
 
-- **Supercell games' login and menus.** In Clash Royale and other Supercell games, the Supercell ID login showed an empty
-  panel and the game drew its arena without its buttons, text and cards. They now show. Other apps whose screens are
-  drawn the same way are fixed too.
-- The Android system is the same as in 0.1.2: instances need no update.
-
-More mapping options are coming in the next releases: repeated taps, MOBA skills, zoom and scroll, and game
-controllers mapped to touches for games without controller support.
+- **More key mapping controls:** repeated tap, MOBA skill, zoom and scroll, and key hints over the game.
+- **Android's folders on your Mac:** Download, Documents, Movies, DCIM and Music live inside the instance on your Mac.
+  What an instance already has in them moves there at its first start with this version.
+- **Drag and drop:** apps dropped on the window are installed, other files go to Download.
+- **Root with Magisk,** per instance.
+- **SMS and SIM:** receive SMS, and change the SIM's operator, phone number and IMEI.
+- **Disk space:** what Android deletes is returned to your Mac.
+- Restarting Android from inside it (Settings, or an app) no longer ends in the recovery.
+- This version has a new Android: use **Update Android** on your instances.
 
 ## Known limitations
 
@@ -157,7 +175,10 @@ controllers mapped to touches for games without controller support.
 - Apps that require Play Integrity or device certification do not run, and some apps can detect that they are in an
   emulator. Signing in to a Google account has not been fully tested.
 - Android 16 is the only version available. More versions are planned.
-- Calls and SMS are not supported. Bluetooth is virtual and cannot pair with real devices.
+- Calls and sending SMS are not supported; SMS can be received. Bluetooth is virtual and cannot pair with real devices.
+- A file put in the Mac's DCIM, Movies or Music while Android runs shows in galleries after the next start; file
+  managers see it at once.
+- Some apps and games refuse to run with root, and Magisk's ways of hiding it are not tested by Kiln.
 - Hardware-backed key storage is available only in instances created with 0.0.9.2 or later.
 - Some games may show graphics glitches. Please report the game, its graphics profile and a screenshot.
 - OpenGL ES games can drop below 60 fps in their heaviest scenes, and Genshin Impact's menu can be slow on an OpenGL ES
@@ -205,7 +226,7 @@ any mobile operator or any device maker named here.
 
 | File | Contents |
 | --- | --- |
-| `Kiln-0.1.3.dmg` | The app, including the Android 16 image |
+| `Kiln-0.2.0.dmg` | The app, including the Android 16 image |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | Source code of the open-source components |

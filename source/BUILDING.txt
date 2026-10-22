@@ -1,4 +1,4 @@
-Kiln open-source parts (kiln revision b4f39e2)
+Kiln open-source parts (kiln revision 8ace49c)
 
 QEMU: upstream v11.1.2 (https://gitlab.com/qemu-project/qemu) plus the files in qemu/. Apply them with
   scripts/apply-qemu.sh <qemu source dir>
@@ -13,4 +13,5 @@ built by the Android tree with its own configuration, plus Kiln's modules and ch
   kernel/v4l2loopback  the camera's video device
   kernel/kiln_cpufreq  the posed phone's CPU frequencies (cpufreq from the device tree)
   kernel/virt_wifi     the change to Linux's virt_wifi driver
+  kernel/kiln_kernel.config  options Kiln adds to the device's configuration (TARGET_KERNEL_CONFIG_EXT): virtio-9p
 Built with KBUILD_BUILD_USER=kiln KBUILD_BUILD_HOST=kiln.

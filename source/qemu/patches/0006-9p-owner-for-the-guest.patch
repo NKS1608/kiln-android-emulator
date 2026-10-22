@@ -1,0 +1,150 @@
+9p (local, security_model=none): owner_uid and owner_gid report every file as owned by them, the group getting the
+owner's permissions. Kiln's shared folder: Android's apps reach it through the media_rw group, while the files on the
+Mac belong to the Mac user; QEMU still does every operation as that user.
+
+diff --git a/fsdev/file-op-9p.h b/fsdev/file-op-9p.h
+index 1d93114..525287e 100644
+--- a/fsdev/file-op-9p.h
++++ b/fsdev/file-op-9p.h
+@@ -101,6 +101,10 @@ typedef struct FsDriverEntry {
+     FsThrottle fst;
+     mode_t fmode;
+     mode_t dmode;
++    /* owner_uid/owner_gid: every file is reported as theirs (see FsContext) */
++    bool owner_set;
++    uid_t owner_uid;
++    gid_t owner_gid;
+     /* temporary storage for parse_opts only */
+     uint32_t max_xattr;
+ } FsDriverEntry;
+@@ -116,6 +120,15 @@ struct FsContext {
+     void *private;
+     mode_t fmode;
+     mode_t dmode;
++    /*
++     * security_model=none with owner_uid and owner_gid: every file is reported as owned by them, the group getting the
++     * owner's permissions, whoever owns it on the host. A guest whose users are not the host's (Android's apps reach a
++     * shared folder through the media_rw group) can then use the files the host user made; the host still does every
++     * operation as the user QEMU runs as.
++     */
++    bool owner_set;
++    uid_t owner_uid;
++    gid_t owner_gid;
+     /* max. amount of simultaneously open xattr FIDs */
+     uint32_t xattr_fid_limit;
+     /* current amount of open xattr FIDs */
+diff --git a/fsdev/qemu-fsdev-opts.c b/fsdev/qemu-fsdev-opts.c
+index c2c1e83..538e448 100644
+--- a/fsdev/qemu-fsdev-opts.c
++++ b/fsdev/qemu-fsdev-opts.c
+@@ -49,6 +49,12 @@ static QemuOptsList qemu_fsdev_opts = {
+         }, {
+             .name = "max_xattr",
+             .type = QEMU_OPT_NUMBER,
++        }, {
++            .name = "owner_uid",
++            .type = QEMU_OPT_NUMBER,
++        }, {
++            .name = "owner_gid",
++            .type = QEMU_OPT_NUMBER,
+         },
+ 
+         THROTTLE_OPTS,
+@@ -98,6 +104,12 @@ static QemuOptsList qemu_virtfs_opts = {
+         }, {
+             .name = "max_xattr",
+             .type = QEMU_OPT_NUMBER,
++        }, {
++            .name = "owner_uid",
++            .type = QEMU_OPT_NUMBER,
++        }, {
++            .name = "owner_gid",
++            .type = QEMU_OPT_NUMBER,
+         },
+ 
+         { /*End of list */ }
+diff --git a/fsdev/qemu-fsdev.c b/fsdev/qemu-fsdev.c
+index f97103c..0719973 100644
+--- a/fsdev/qemu-fsdev.c
++++ b/fsdev/qemu-fsdev.c
+@@ -58,6 +58,8 @@ static FsDriverTable FsDrivers[] = {
+             "writeout",
+             "fmode",
+             "dmode",
++            "owner_uid",
++            "owner_gid",
+             "multidevs",
+             "throttling.bps-total",
+             "throttling.bps-read",
+diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
+index ee592b6..94a302e 100644
+--- a/hw/9pfs/9p-local.c
++++ b/hw/9pfs/9p-local.c
+@@ -183,6 +183,16 @@ static void local_mapped_file_attr(int dirfd, const char *name,
+     fclose(fp);
+ }
+ 
++/* owner_uid/owner_gid: the file as the guest sees it (FsContext.owner_set). */
++static void local_owner_attr(FsContext *fs_ctx, struct stat *stbuf)
++{
++    if (fs_ctx->owner_set) {
++        stbuf->st_uid = fs_ctx->owner_uid;
++        stbuf->st_gid = fs_ctx->owner_gid;
++        stbuf->st_mode |= (stbuf->st_mode & 0700) >> 3;
++    }
++}
++
+ static int local_lstat(FsContext *fs_ctx, V9fsPath *fs_path, struct stat *stbuf)
+ {
+     int err = -1;
+@@ -225,6 +235,7 @@ static int local_lstat(FsContext *fs_ctx, V9fsPath *fs_path, struct stat *stbuf)
+     } else if (fs_ctx->export_flags & V9FS_SM_MAPPED_FILE) {
+         local_mapped_file_attr(dirfd, name, stbuf);
+     }
++    local_owner_attr(fs_ctx, stbuf);
+ 
+ err_out:
+     close_preserve_errno(dirfd);
+@@ -819,6 +830,7 @@ static int local_fstat(FsContext *fs_ctx, int fid_type,
+         errno = EOPNOTSUPP;
+         return -1;
+     }
++    local_owner_attr(fs_ctx, stbuf);
+     return err;
+ }
+ 
+@@ -1609,6 +1621,20 @@ static int local_parse_opts(QemuOpts *opts, FsDriverEntry *fse, Error **errp)
+         }
+     }
+ 
++    if (qemu_opt_find(opts, "owner_uid") || qemu_opt_find(opts, "owner_gid")) {
++        if (!(fse->export_flags & V9FS_SM_NONE)) {
++            error_setg(errp, "owner_uid and owner_gid are only valid with security_model=none");
++            return -1;
++        }
++        if (!qemu_opt_find(opts, "owner_uid") || !qemu_opt_find(opts, "owner_gid")) {
++            error_setg(errp, "owner_uid and owner_gid go together");
++            return -1;
++        }
++        fse->owner_set = true;
++        fse->owner_uid = qemu_opt_get_number(opts, "owner_uid", 0);
++        fse->owner_gid = qemu_opt_get_number(opts, "owner_gid", 0);
++    }
++
+     fse->path = g_strdup(path);
+ 
+     return 0;
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 4764d9d..10acd8c 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -4461,6 +4461,9 @@ int v9fs_device_realize_common(V9fsState *s, const V9fsTransport *t,
+     s->ops = fse->ops;
+ 
+     s->ctx.fmode = fse->fmode;
++    s->ctx.owner_set = fse->owner_set;
++    s->ctx.owner_uid = fse->owner_uid;
++    s->ctx.owner_gid = fse->owner_gid;
+     s->ctx.dmode = fse->dmode;
+ 
+     s->fids = g_hash_table_new(NULL, NULL);
