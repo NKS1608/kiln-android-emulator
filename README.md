@@ -6,9 +6,9 @@
 
 <p align="center">An Android emulator for Macs with Apple Silicon, made for apps and games.</p>
 
-<p align="center"><code>0.2.0</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.2.1</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.0"><b>Download Kiln 0.2.0</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.1"><b>Download Kiln 0.2.1</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
 
 ---
 
@@ -82,7 +82,7 @@ keyboard, the mouse or a game controller.
 
 ## Install
 
-1. Download `Kiln-0.2.0.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.0)
+1. Download `Kiln-0.2.1.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.1)
    and open it.
 2. Drag **Kiln** to **Applications**.
 3. Kiln is not notarized by Apple yet, so macOS asks for confirmation the first time. Right-click Kiln, choose
@@ -153,6 +153,13 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 
 `kilnctl` is at `/Applications/Kiln.app/Contents/Helpers/kilnctl`. Run it without arguments to see its commands.
 
+## What's new in 0.2.1
+
+- **Memory leak fixed:** the renderer kept every app window's graphics after the window closed, so a long session could
+  grow to tens of GB and fill the Mac's swap. They are now freed. A process stopped by force can still leave a few
+  behind until the instance restarts.
+- The Android is the same as in 0.2.0: instances already updated to 0.2.0 do not need **Update Android**.
+
 ## What's new in 0.2.0
 
 - **More key mapping controls:** repeated tap, MOBA skill, zoom and scroll, and key hints over the game.
@@ -175,6 +182,7 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 - Apps that require Play Integrity or device certification do not run, and some apps can detect that they are in an
   emulator. Signing in to a Google account has not been fully tested.
 - Android 16 is the only version available. More versions are planned.
+- Opening the SIM's page in Android's Settings (Network & internet > SIMs) closes Settings. A fix is planned.
 - Calls and sending SMS are not supported; SMS can be received. Bluetooth is virtual and cannot pair with real devices.
 - A file put in the Mac's DCIM, Movies or Music while Android runs shows in galleries after the next start; file
   managers see it at once.
@@ -226,7 +234,7 @@ any mobile operator or any device maker named here.
 
 | File | Contents |
 | --- | --- |
-| `Kiln-0.2.0.dmg` | The app, including the Android 16 image |
+| `Kiln-0.2.1.dmg` | The app, including the Android 16 image |
 | `SHA256SUMS.txt` | Checksum of the disk image |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | Source code of the open-source components |
