@@ -511,7 +511,9 @@ static int32_t rd_vm_map(KrdVmMsg *m)
     kern_return_t kr;
     bool ok;
 
-    if (m->body.msgh_descriptor_count != 1 || m->offset + m->size > m->entry_size) {
+    /* offset + size is not compared: with offset near 2^64 the sum wraps below entry_size, and the window would start
+     * below the mapping (vaddress_host_map takes base + offset), over memory that is not renderd's. */
+    if (m->body.msgh_descriptor_count != 1 || m->offset > m->entry_size || m->size > m->entry_size - m->offset) {
         error_report("vaddress: kiln-renderd sent a malformed map of gpa 0x%" PRIx64, m->gpa);
         return 0;
     }

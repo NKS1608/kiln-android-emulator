@@ -6,9 +6,9 @@
 
 <p align="center">An Android emulator for Macs with Apple Silicon, made for apps and games.</p>
 
-<p align="center"><code>0.2.2</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.2.3</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.2"><b>Download Kiln 0.2.2</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.3"><b>Download Kiln 0.2.3</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
 
 ---
 
@@ -38,12 +38,16 @@ keyboard, the mouse or a game controller.
 
 ### Games
 
-- Key mapping per game. Place taps, a joystick and swipes on the screen, then assign keys to them. Key combinations
+- Key mapping per game. Place taps, joysticks and swipes on the screen, then assign keys to them. Key combinations
   such as ⇧Q or ⌃1 work, and several keys can be held at once. Kiln switches to a game's mapping when that game comes
   to the front.
+- Two joysticks in one mapping, and a key that makes a joystick walk or run (how far the stick goes).
+- Several schemes for one game, for example on foot and in a vehicle. Switch with **F1** to **F9** or **⌘1** to
+  **⌘9** (scheme 1 is F1 or ⌘1, scheme 2 is F2 or ⌘2, and so on) while the mapping is on. **⌘0** turns the mapping on and
+  off, like F10 and ⌃⌥.
 - Camera control with the mouse, for games where you look around by dragging a thumb on the screen.
 - Gyroscope aiming: in games that aim by tilting the phone, moving the mouse turns it. You can choose a key or mouse
-  button to hold while aiming, and keep the mouse camera for the rest of the time.
+  button (including the side buttons) to hold while aiming, and keep the mouse camera for the rest of the time.
 - A key of your choice frees the mouse pointer while a mapping is on, to click the game's menus. Hold ⌥ (or another
   modifier) to free it only while held.
 - Repeated taps: hold a key and the screen is tapped again and again, up to 30 times a second.
@@ -53,7 +57,8 @@ keyboard, the mouse or a game controller.
 - Share a game's mapping as a file with **Export…** and **Import…** in the mapping editor.
 - A mouse and keyboard mode for games that support them directly, such as Minecraft.
 - Game controllers connected to your Mac appear in Android as a standard gamepad.
-- Controllers mapped to touches, for games without controller support, are on the way.
+- Controllers mapped to touches, for games without controller support: buttons, triggers and the directional pad can
+  tap, a stick can drive a joystick, and the other stick can turn the camera. Pick them in the mapping editor.
 - Anti-aliasing in games, as on a phone: games such as PUBG Mobile at HD quality draw it correctly.
 - Refresh rates up to 180 Hz. The screen's rate follows what is shown, as on phones with adaptive displays: a still
   screen slows down and a game gets the rate it runs at.
@@ -82,7 +87,7 @@ keyboard, the mouse or a game controller.
 
 ## Install
 
-1. Download `Kiln-0.2.2.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.2)
+1. Download `Kiln-0.2.3.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.3)
    and open it.
 2. Drag **Kiln** to **Applications**.
 3. Kiln is not notarized by Apple yet, so macOS asks for confirmation the first time. Right-click Kiln, choose
@@ -101,6 +106,11 @@ and accounts. The previous system is kept until you remove it with **Delete Prev
 Previous System** restores it if something goes wrong.
 
 The first time a game opens after an update, it may take longer to load once.
+
+Kiln can also look for new versions itself, if you allow it (it asks once, and **Settings** has the switch). It reads a
+small signed file from the latest release here on GitHub, at most once a day, and sends nothing about you. Nothing is
+downloaded or installed until you click **Update**, and Kiln asks you to close running instances first. When a new
+version has the same Android as yours, only the app is downloaded (about 30 MB) and your Android stays as it is.
 
 ## About the Android image
 
@@ -152,6 +162,22 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 | Collect logs for a bug report | **Error Report** in the launcher |
 
 `kilnctl` is at `/Applications/Kiln.app/Contents/Helpers/kilnctl`. Run it without arguments to see its commands.
+
+## What's new in 0.2.3
+
+- **Key mapping:** a second joystick, several schemes per game (F1 to F9 or ⌘1 to ⌘9), a walk/run key, controllers
+  mapped to touches, the side mouse buttons as the gyroscope key, ⌘0 to turn the mapping on and off, and an editor that
+  makes the key you are setting blink on the screen, so you do not have to guess the order of a joystick's four keys.
+  **Clear All** no longer closes the editor when a control is selected.
+- **Updates, if you want them:** Kiln can look for a new version and install it. It asks once. A version with the same
+  Android downloads only the app.
+- **Safer graphics and memory:** an app inside Android can no longer make the renderer write outside the buffer it
+  sized for 20 OpenGL ES calls (shader logs, program binaries, uniform block names and similar), and graphics memory an
+  app has freed can no longer be read through a mapping it kept. A file dropped on the window whose name has a line
+  break can no longer be read by Android as a second command. These were found in a code review, and nothing indicates
+  they were used.
+- **TikTok lives** no longer show a solid green picture.
+- This version has a new Android: use **Update Android** on your instances.
 
 ## What's new in 0.2.2
 
@@ -239,7 +265,8 @@ any mobile operator or any device maker named here.
 
 | File | Contents |
 | --- | --- |
-| `Kiln-0.2.2.dmg` | The app, including the Android 16 image |
-| `SHA256SUMS.txt` | Checksum of the disk image |
+| `Kiln-0.2.3.dmg` | The app, including the Android 16 image |
+| `Kiln-0.2.3-app.zip`, `update.json`, `update.json.sig` | What Kiln's own update check reads: the app without the Android image, and a signed description of the release |
+| `SHA256SUMS.txt` | Checksums of the disk image and the app zip |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | Source code of the open-source components |

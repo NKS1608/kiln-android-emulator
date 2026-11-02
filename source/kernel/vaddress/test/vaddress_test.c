@@ -10,6 +10,8 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
+#include <setjmp.h>
+#include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -32,6 +34,14 @@
 #define R_WRITE_POS		0x10
 #define R_WRAP_POS		0x14
 #define R_READ_POS		0x40
+
+static sigjmp_buf stale_jmp;
+
+static void on_sigbus(int sig)
+{
+	(void)sig;
+	siglongjmp(stale_jmp, 1);
+}
 
 static volatile uint32_t *u32at(uint8_t *blk, size_t off)
 {
@@ -107,6 +117,36 @@ int main(void)
 		pfd.fd = work.fence_fd;
 		CHECK(poll(&pfd, 1, 2000) == 1 && (pfd.revents & POLLIN), "fence signaled within 2 s");
 		close(work.fence_fd);
+	}
+	/*
+	 * A mapping must not outlive its block: after DEALLOCATE the host gives the offset to the next ALLOCATE, and a kept
+	 * mapping would alias that block (another process's). Touching it must be SIGBUS.
+	 */
+	{
+		struct va_ioctl_allocate al2 = { .size = HDR };
+		struct va_ioctl_map map2 = { 0 };
+		struct va_ioctl_offset off2;
+		struct sigaction sa = { .sa_handler = on_sigbus };
+		volatile uint8_t *kept;
+
+		CHECK(ioctl(fd, VA_IOCTL_ALLOCATE, &al2) == 0, "ALLOCATE (stale mapping check)");
+		kept = mmap(NULL, al2.size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, al2.offset);
+		CHECK(kept != MAP_FAILED, "mmap (stale mapping check)");
+		map2.offset = al2.offset;
+		map2.size = al2.size;
+		CHECK(ioctl(fd, VA_IOCTL_MAP_HVA, &map2) == 0, "MAP_HVA (stale mapping check)");
+		kept[0] = 1;
+		off2.offset = al2.offset;
+		CHECK(ioctl(fd, VA_IOCTL_DEALLOCATE, &off2) == 0, "DEALLOCATE without munmap");
+		sigemptyset(&sa.sa_mask);
+		CHECK(sigaction(SIGBUS, &sa, NULL) == 0, "SIGBUS handler");
+		if (sigsetjmp(stale_jmp, 1) == 0) {
+			(void)kept[0];
+			errno = 0;
+			CHECK(0, "a mapping of a deallocated block faults");
+		}
+		fprintf(stderr, "ok: a mapping of a deallocated block faults\n");
+		munmap((void *)kept, al2.size);
 	}
 	close(fd);
 	puts("PASS");

@@ -119,6 +119,7 @@ struct va_block {
 
 struct va_file {
 	struct va_dev *dev;
+	struct address_space *mapping;	/* of the node: every mmap of a block of this file is in it */
 	struct mutex lock;
 	struct list_head blocks;
 };
@@ -334,8 +335,14 @@ static void va_block_release(struct kref *ref)
 	kfree(container_of(ref, struct va_block, ref));
 }
 
-static void va_free_block(struct va_dev *d, struct va_block *b)
+static void va_free_block(struct va_dev *d, struct address_space *mapping, struct va_block *b)
 {
+	/*
+	 * A mapping made by va_mmap outlives the block unless it is torn down here: the host hands the freed range to the
+	 * next ALLOCATE (lowest gap that fits), and a process that kept its mapping (DEALLOCATE without munmap) would then
+	 * read and write another process's block. Touching a torn-down mapping is SIGBUS.
+	 */
+	unmap_mapping_range(mapping, b->offset, b->size, 1);
 	va_terminate(d, b);
 	va_unmap(d, b);
 	mutex_lock(&d->regs_lock);
@@ -383,7 +390,7 @@ static long va_allocate(struct va_file *f, void __user *argp)
 	a.offset = b->offset;
 	a.phys_addr = d->mem_phys + b->offset;
 	if (copy_to_user(argp, &a, sizeof(a))) {
-		va_free_block(d, b);
+		va_free_block(d, f->mapping, b);
 		return -EFAULT;
 	}
 	return 0;
@@ -399,7 +406,7 @@ static long va_deallocate(struct va_file *f, void __user *argp)
 	b = va_find(f, a.offset);
 	if (!b)
 		return -EINVAL;
-	va_free_block(f->dev, b);
+	va_free_block(f->dev, f->mapping, b);
 	return 0;
 }
 
@@ -685,6 +692,7 @@ static int va_open(struct inode *inode, struct file *filp)
 	if (!f)
 		return -ENOMEM;
 	f->dev = d;
+	f->mapping = filp->f_mapping;
 	mutex_init(&f->lock);
 	INIT_LIST_HEAD(&f->blocks);
 	filp->private_data = f;
@@ -698,7 +706,7 @@ static int va_release(struct inode *inode, struct file *filp)
 
 	mutex_lock(&f->lock);
 	list_for_each_entry_safe(b, tmp, &f->blocks, node)
-		va_free_block(f->dev, b);
+		va_free_block(f->dev, f->mapping, b);
 	mutex_unlock(&f->lock);
 	kfree(f);
 	return 0;
