@@ -6,9 +6,9 @@
 
 <p align="center">An Android emulator for Macs with Apple Silicon, made for apps and games.</p>
 
-<p align="center"><code>0.2.3</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.2.4</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.3"><b>Download Kiln 0.2.3</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.4"><b>Download Kiln 0.2.4</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
 
 ---
 
@@ -87,7 +87,7 @@ keyboard, the mouse or a game controller.
 
 ## Install
 
-1. Download `Kiln-0.2.3.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.3)
+1. Download `Kiln-0.2.4.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.4)
    and open it.
 2. Drag **Kiln** to **Applications**.
 3. Kiln is not notarized by Apple yet, so macOS asks for confirmation the first time. Right-click Kiln, choose
@@ -162,6 +162,25 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 | Collect logs for a bug report | **Error Report** in the launcher |
 
 `kilnctl` is at `/Applications/Kiln.app/Contents/Helpers/kilnctl`. Run it without arguments to see its commands.
+
+## What's new in 0.2.4
+
+- **A PIN or password can be set.** Before, Android accepted a screen lock but could not check it afterwards, so the lock
+  screen, Settings and anything asking for your PIN failed. Instances that already have a PIN that could not be checked
+  work again with this version once they are opened in it (no new Android needed).
+- **A virtual fingerprint sensor.** Device > **Touch Fingerprint Sensor** (⌘⇧F) in the player touches the sensor: apps
+  that ask for a fingerprint get one, and Settings can enroll it (set a PIN first). Any touch matches an enrolled
+  finger, and apps that tie a key to the fingerprint (a biometric prompt with a crypto object) still fail.
+- **The phone's build fingerprint can be chosen.** The identity screen of an instance has a **Build fingerprint**
+  field (`brand/product/device:release/id/incremental:type/tags`, up to 91 characters), for when the one Kiln makes does
+  not suit an app. Empty keeps the generated one.
+- **Sync to display** (instance settings, off by default): the player shows each frame on the screen's refresh. No
+  tearing, up to one frame more of delay. It evens out the frame times most on 144 Hz and faster screens.
+- **A steadier picture on large screens.** On a 1440 x 2560 instance the player could show 45 to 50 frames a second while
+  Android drew more; it now keeps up with the screen. In our tests with 144 and 180 Hz screens it kept up with them too.
+- **The renderer frees what a closed app left behind** (its graphics contexts and surfaces) instead of keeping it until
+  the instance stops.
+- This version has a new Android: use **Update Android** on your instances.
 
 ## What's new in 0.2.3
 
@@ -265,8 +284,8 @@ any mobile operator or any device maker named here.
 
 | File | Contents |
 | --- | --- |
-| `Kiln-0.2.3.dmg` | The app, including the Android 16 image |
-| `Kiln-0.2.3-app.zip`, `update.json`, `update.json.sig` | What Kiln's own update check reads: the app without the Android image, and a signed description of the release |
+| `Kiln-0.2.4.dmg` | The app, including the Android 16 image |
+| `Kiln-0.2.4-app.zip`, `update.json`, `update.json.sig` | What Kiln's own update check reads: the app without the Android image, and a signed description of the release |
 | `SHA256SUMS.txt` | Checksums of the disk image and the app zip |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | Source code of the open-source components |
