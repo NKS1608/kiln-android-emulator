@@ -6,9 +6,9 @@
 
 <p align="center">An Android emulator for Macs with Apple Silicon, made for apps and games.</p>
 
-<p align="center"><code>0.2.4</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
+<p align="center"><code>0.2.5</code> · macOS 14 or later · Apple Silicon (M1 and later) · English and Português (Brasil)</p>
 
-<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.4"><b>Download Kiln 0.2.4</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
+<p align="center"><a href="https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.5"><b>Download Kiln 0.2.5</b></a> · <a href="https://ko-fi.com/nks1608">Support Kiln</a></p>
 
 ---
 
@@ -87,7 +87,7 @@ keyboard, the mouse or a game controller.
 
 ## Install
 
-1. Download `Kiln-0.2.4.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.4)
+1. Download `Kiln-0.2.5.dmg` from the [release page](https://github.com/NKS1608/kiln-android-emulator/releases/tag/v0.2.5)
    and open it.
 2. Drag **Kiln** to **Applications**.
 3. Kiln is not notarized by Apple yet, so macOS asks for confirmation the first time. Right-click Kiln, choose
@@ -162,6 +162,20 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 | Collect logs for a bug report | **Error Report** in the launcher |
 
 `kilnctl` is at `/Applications/Kiln.app/Contents/Helpers/kilnctl`. Run it without arguments to see its commands.
+
+## What's new in 0.2.5
+
+- **A screen lock (PIN, pattern or password) works, and keeps working after a restart.** Before, Android accepted the lock but could
+  not check it afterwards, so the lock screen, Settings and anything asking for it failed. An instance that already has a lock set
+  that way works again once it is opened in this version.
+- **The Mac folders mount with a screen lock.** With a lock set, the Android folders on the Mac (Download, Documents, DCIM, Movies,
+  Music) failed to mount at the next start and the launcher's listing was refused; they now mount as soon as you unlock.
+- **The phone no longer says it is a PC.** The Android image stops declaring the desktop class it inherited from the virtual device.
+- **The Android reports OpenGL ES 3.2 and the Android Extension Pack**, as a phone of this class does. The graphics engine itself is
+  unchanged (see Known limitations).
+- **A notice about Google apps** (**Google Apps** in the instance's toolbar): Kiln does not include them; it explains how to add a
+  package of your choice with Install Zip, and links to the authors' pages.
+- This version has a new Android: use **Update Android** on your instances.
 
 ## What's new in 0.2.4
 
@@ -239,6 +253,8 @@ messaging and the setup wizard. Always-on display, hotspot, tethering and castin
 - Some apps and games refuse to run with root, and Magisk's ways of hiding it are not tested by Kiln.
 - Hardware-backed key storage is available only in instances created with 0.0.9.2 or later.
 - Some games may show graphics glitches. Please report the game, its graphics profile and a screenshot.
+- The Android reports OpenGL ES 3.2 and the Android Extension Pack, but Kiln's graphics engine is OpenGL ES 3.1 and has no geometry
+  shaders: an app that really needs a 3.2 context or those shaders in OpenGL will not work. Vulkan is not affected.
 - OpenGL ES games can drop below 60 fps in their heaviest scenes, and Genshin Impact's menu can be slow on an OpenGL ES
   profile. Vulkan profiles, such as Adreno 740, are usually smoother.
 - Genshin Impact on an OpenGL ES profile may close after a long session. Vulkan profiles are not affected.
@@ -284,8 +300,8 @@ any mobile operator or any device maker named here.
 
 | File | Contents |
 | --- | --- |
-| `Kiln-0.2.4.dmg` | The app, including the Android 16 image |
-| `Kiln-0.2.4-app.zip`, `update.json`, `update.json.sig` | What Kiln's own update check reads: the app without the Android image, and a signed description of the release |
+| `Kiln-0.2.5.dmg` | The app, including the Android 16 image |
+| `Kiln-0.2.5-app.zip`, `update.json`, `update.json.sig` | What Kiln's own update check reads: the app without the Android image, and a signed description of the release |
 | `SHA256SUMS.txt` | Checksums of the disk image and the app zip |
 | `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `OFFER.txt` | Licensing |
 | `source/` (in this repository) | Source code of the open-source components |
